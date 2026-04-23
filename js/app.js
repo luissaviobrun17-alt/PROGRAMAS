@@ -51,12 +51,20 @@ const FreeWorld = (function() {
     }
 
     function selectInstructor(name) {
+        // Migrate old names
+        if (name === 'arthur') name = 'vinicius';
+        if (name === 'leticia') name = 'carolina';
         state.selectedInstructor = name;
         localStorage.setItem('freeworld_instructor', name);
         // Update UI cards
         document.querySelectorAll('.instructor-card.selectable').forEach(c => c.classList.remove('selected'));
         const card = document.getElementById('card-' + name);
         if (card) card.classList.add('selected');
+        // Update check marks
+        const checkV = document.getElementById('check-vinicius');
+        const checkC = document.getElementById('check-carolina');
+        if (checkV) checkV.textContent = name === 'vinicius' ? '✓' : '';
+        if (checkC) checkC.textContent = name === 'carolina' ? '✓' : '';
     }
 
     function setupKeyboard() {
