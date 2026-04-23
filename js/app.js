@@ -387,20 +387,27 @@ const FreeWorld = (function() {
     }
 
     // ====== STEP RENDERING ======
+    function getInstrInfo() {
+        var isV = state.selectedInstructor === 'vinicius';
+        return { name: isV ? 'Prof. Vinicius' : 'Prof. Carolina', img: 'assets/images/' + state.selectedInstructor + '.png', female: !isV };
+    }
+    function instrBubble(text, extra) {
+        var i = getInstrInfo();
+        return '<div class="instr-bubble"><img class="instr-bubble-avatar" src="' + i.img + '"><div class="instr-bubble-content"><strong class="instr-bubble-name">' + i.name + '</strong><p>' + text + '</p>' + (extra || '') + '</div></div>';
+    }
+    function sName() { return state.studentName || 'aluno'; }
+
     function renderCurrentStep() {
-        const lesson = getLesson();
+        var lesson = getLesson();
         if (!lesson) return;
-        const steps = getAvailableSteps(lesson);
-        const stepName = steps[state.currentStep];
-        // Hide all sections
-        ['dual-layout','vocabulary-section','grammar-section','dialogue-section','pronunciation-section','flashcard-section','roleplay-section','listening-section','cultural-section','exercise-section','lesson-summary'].forEach(id => {
-            const el = document.getElementById(id);
+        var steps = getAvailableSteps(lesson);
+        var stepName = steps[state.currentStep];
+        ['dual-layout','vocabulary-section','grammar-section','dialogue-section','pronunciation-section','flashcard-section','roleplay-section','listening-section','cultural-section','exercise-section','lesson-summary'].forEach(function(id) {
+            var el = document.getElementById(id);
             if (el) el.style.display = 'none';
         });
-        // Update navigation buttons
         document.getElementById('btn-prev-step').disabled = state.currentStep === 0;
-        document.getElementById('btn-next-step').textContent = state.currentStep >= steps.length - 1 ? 'Concluir ✓' : 'Próximo →';
-
+        document.getElementById('btn-next-step').textContent = state.currentStep >= steps.length - 1 ? 'Concluir \u2713' : 'Pr\u00f3ximo \u2192';
         switch(stepName) {
             case 'intro': renderIntro(lesson); break;
             case 'vocabulary': renderVocabulary(lesson); break;
@@ -419,115 +426,99 @@ const FreeWorld = (function() {
 
     function renderIntro(lesson) {
         document.getElementById('dual-layout').style.display = 'grid';
-        const textEl = document.getElementById('content-text');
-        const visualEl = document.getElementById('content-visual');
-        // Dynamic instructor name replacement
-        const instrName = state.selectedInstructor === 'vinicius' ? 'Vinicius' : 'Carolina';
-        const studentGreeting = state.studentName ? ', ' + state.studentName + '!' : '!';
-        let introText = lesson.intro.text.replace(/I'm Vinicius/g, "I'm " + instrName).replace(/Eu sou o Vinicius/g, 'Eu sou ' + (state.selectedInstructor === 'vinicius' ? 'o Vinicius' : 'a Carolina'));
-        let introPt = lesson.intro.textPt ? lesson.intro.textPt.replace(/Eu sou o Vinicius/g, 'Eu sou ' + (state.selectedInstructor === 'vinicius' ? 'o Vinicius' : 'a Carolina')) : '';
-        // Text side
-        let textHtml = '<h4>📚 ' + lesson.title + '</h4>';
-        textHtml += '<p class="en">' + introText + '</p>';
-        if (state.settings.showTranslation && introPt) {
-            textHtml += '<p class="pt">' + introPt + '</p>';
-        }
-        textEl.innerHTML = textHtml;
-        // Visual side
-        visualEl.innerHTML = '<div class="visual-icon">🖼️</div><p class="visual-desc">[[IMAGEM: ' + lesson.intro.visual + ']]</p>';
-        // Typewriter with personalized greeting
-        typeText('Welcome' + studentGreeting + ' ' + introText.substring(0, 100) + '...');
+        var textEl = document.getElementById('content-text');
+        var visualEl = document.getElementById('content-visual');
+        var instr = getInstrInfo();
+        var sn = sName();
+        var html = '<div class="lesson-phase-label">FASE 1 \u2014 CONTEXTUALIZA\u00c7\u00c3O</div>';
+        html += '<h4 class="lesson-title-main">' + lesson.title + '</h4>';
+        html += '<p class="lesson-title-pt">' + (lesson.titlePt || '') + '</p>';
+        html += instrBubble((state.studentName ? 'Ol\u00e1, <strong>' + sn + '</strong>! ' : 'Ol\u00e1! ') + lesson.intro.textPt, '<button class="btn-speak-inline" onclick="FreeWorld.speak(\'' + lesson.intro.text.replace(/'/g,"\\'") + '\')">🔊 Ouvir em ingl\u00eas</button>');
+        html += '<div class="intro-english-text"><p class="en">' + lesson.intro.text + '</p></div>';
+        textEl.innerHTML = html;
+        visualEl.innerHTML = '<div class="visual-icon">\ud83d\uddbc\ufe0f</div><p class="visual-desc">[[IMAGEM: ' + lesson.intro.visual + ']]</p>';
+        typeText(instr.name + ': Welcome, ' + sn + '! Let\'s begin \u2014 ' + lesson.title);
     }
 
     function renderVocabulary(lesson) {
-        const section = document.getElementById('vocabulary-section');
-        section.style.display = 'block';
-        const container = document.getElementById('vocab-cards');
-        let html = '';
-        lesson.vocabulary.forEach((v, i) => {
+        document.getElementById('vocabulary-section').style.display = 'block';
+        var container = document.getElementById('vocab-cards');
+        var instr = getInstrInfo();
+        var html = '<div class="lesson-phase-label">FASE 2 \u2014 VOCABUL\u00c1RIO ESSENCIAL</div>';
+        html += instrBubble(sName() + ', agora vamos aprender as palavras-chave. Clique em \ud83d\udd0a para ouvir e repita em voz alta!');
+        lesson.vocabulary.forEach(function(v, i) {
             html += '<div class="vocab-card" style="animation-delay:' + (i * 0.1) + 's">';
-            html += '<button class="btn-speak" onclick="FreeWorld.speak(\'' + v.word.replace(/'/g,"\\'") + '\')" title="Ouvir pronúncia">🔊</button>';
-            html += '<div class="word">' + v.word + '</div>';
-            html += '<div class="ipa">' + v.ipa + '</div>';
-            html += '<div class="translation">→ ' + v.pt + '</div>';
+            html += '<button class="btn-speak" onclick="FreeWorld.speak(\'' + v.word.replace(/'/g,"\\'") + '\')" title="Ouvir">\ud83d\udd0a</button>';
+            html += '<div class="word">' + v.word + '</div><div class="ipa">' + v.ipa + '</div>';
+            html += '<div class="translation">\u2192 ' + v.pt + '</div>';
             html += '<div class="example"><strong>Ex:</strong> ' + v.ex;
             if (state.settings.showTranslation && v.exPt) html += '<br><em>' + v.exPt + '</em>';
             html += '</div></div>';
-            // Track learned words
-            if (!state.progress.wordsLearned.includes(v.word)) {
-                state.progress.wordsLearned.push(v.word);
-            }
+            if (!state.progress.wordsLearned.includes(v.word)) state.progress.wordsLearned.push(v.word);
         });
         container.innerHTML = html;
-        typeText('Let\'s learn some new vocabulary! Click the 🔊 button to hear the pronunciation.');
+        typeText(instr.name + ': Let\'s master these key words! Listen, repeat, and memorize.');
         saveProgress();
     }
 
     function renderGrammar(lesson) {
-        const section = document.getElementById('grammar-section');
-        section.style.display = 'block';
-        const content = document.getElementById('grammar-content');
-        let html = '<h4>' + lesson.grammar.title + '</h4>';
-        html += '<p><em>' + lesson.grammar.titlePt + '</em></p>';
+        document.getElementById('grammar-section').style.display = 'block';
+        var content = document.getElementById('grammar-content');
+        var instr = getInstrInfo();
+        var html = '<div class="lesson-phase-label">FASE 3 \u2014 GRAM\u00c1TICA APLICADA</div>';
+        html += instrBubble(sName() + ', preste aten\u00e7\u00e3o nos padr\u00f5es gramaticais \u2014 isso \u00e9 fundamental para formar frases corretas!');
+        html += '<h4>' + lesson.grammar.title + '</h4><p><em>' + lesson.grammar.titlePt + '</em></p>';
         html += '<p>' + lesson.grammar.explanation + '</p>';
-        html += '<table class="grammar-table"><thead><tr>';
-        // Determine headers based on content
-        html += '<th>Sujeito/Tipo</th><th>Forma</th><th>Exemplo</th>';
-        html += '</tr></thead><tbody>';
-        lesson.grammar.table.forEach(row => {
-            html += '<tr>';
-            row.forEach(cell => { html += '<td>' + cell + '</td>'; });
-            html += '</tr>';
-        });
+        html += '<table class="grammar-table"><thead><tr><th>Sujeito/Tipo</th><th>Forma</th><th>Exemplo</th></tr></thead><tbody>';
+        lesson.grammar.table.forEach(function(row) { html += '<tr>'; row.forEach(function(cell) { html += '<td>' + cell + '</td>'; }); html += '</tr>'; });
         html += '</tbody></table>';
         if (lesson.grammar.tip) {
             html += '<div style="background:rgba(245,158,11,.08);border-left:3px solid var(--warm);padding:12px 16px;border-radius:0 8px 8px 0;margin-top:12px;font-size:.88rem;color:var(--warm)">';
-            html += '💡 <strong>Dica:</strong> ' + lesson.grammar.tip + '</div>';
+            html += '\ud83d\udca1 <strong>' + instr.name + ' diz:</strong> ' + lesson.grammar.tip + '</div>';
         }
         content.innerHTML = html;
-        typeText('Now let\'s understand the grammar behind what we learned. Pay close attention to the patterns!');
+        typeText(instr.name + ': Understanding grammar patterns will unlock your ability to create sentences!');
     }
 
     function renderDialogue(lesson) {
-        const section = document.getElementById('dialogue-section');
-        section.style.display = 'block';
-        const content = document.getElementById('dialogue-content');
-        let html = '';
-        lesson.dialogue.forEach((d, i) => {
-            const isVinicius = d.speaker === 'vinicius';
+        document.getElementById('dialogue-section').style.display = 'block';
+        var content = document.getElementById('dialogue-content');
+        var instr = getInstrInfo();
+        var html = '<div class="lesson-phase-label">FASE 4 \u2014 DI\u00c1LOGO PR\u00c1TICO</div>';
+        html += instrBubble(sName() + ', ou\u00e7a o di\u00e1logo entre Prof. Vinicius e Prof. Carolina. Clique \ud83d\udd0a para ouvir cada frase!');
+        lesson.dialogue.forEach(function(d, i) {
+            var isV = d.speaker === 'vinicius';
+            var spName = isV ? 'Prof. Vinicius' : 'Prof. Carolina';
             html += '<div class="dialogue-bubble ' + d.speaker + '" style="animation-delay:' + (i * 0.2) + 's">';
-            html += '<img class="dialogue-avatar" src="assets/images/' + d.speaker + '.png" alt="' + d.speaker + '">';
+            html += '<img class="dialogue-avatar" src="assets/images/' + d.speaker + '.png" alt="' + spName + '">';
             html += '<div class="dialogue-text-wrap">';
-            html += '<div class="dialogue-name">' + (isVinicius ? 'Vinicius' : 'Carolina') + '</div>';
+            html += '<div class="dialogue-name">' + spName + ' <button class="btn-speak-mini" onclick="FreeWorld.speak(\'' + d.text.replace(/'/g,"\\'") + '\', ' + (!isV) + ')">\ud83d\udd0a</button></div>';
             html += '<div class="dialogue-msg">' + d.text + '</div>';
-            if (state.settings.showTranslation && d.textPt) {
-                html += '<div class="dialogue-translation">' + d.textPt + '</div>';
-            }
+            if (state.settings.showTranslation && d.textPt) html += '<div class="dialogue-translation">' + d.textPt + '</div>';
             html += '</div></div>';
         });
         content.innerHTML = html;
-        typeText('Listen to this conversation between Vinicius and Carolina. Try to understand before reading the translation!');
+        typeText(instr.name + ': Notice how we use vocabulary and grammar in a real conversation!');
     }
 
     function renderPronunciation(lesson) {
-        const section = document.getElementById('pronunciation-section');
-        section.style.display = 'block';
-        const content = document.getElementById('pronunciation-content');
-        let html = '';
-        lesson.pronunciation.forEach(p => {
-            html += '<div class="pronun-card">';
-            html += '<div class="pronun-word">' + p.word + '</div>';
+        document.getElementById('pronunciation-section').style.display = 'block';
+        var content = document.getElementById('pronunciation-content');
+        var instr = getInstrInfo();
+        var html = '<div class="lesson-phase-label">FASE 5 \u2014 PRON\u00daCIA & FON\u00c9TICA</div>';
+        html += instrBubble(sName() + ', a pron\u00fancia \u00e9 essencial! Vou te guiar em cada detalhe. Ou\u00e7a, repita e compare!');
+        lesson.pronunciation.forEach(function(p) {
+            html += '<div class="pronun-card"><div class="pronun-word">' + p.word + '</div>';
             html += '<div class="pronun-ipa">' + p.ipa + '</div>';
-            html += '<div class="pronun-breakdown">🗣️ ' + p.breakdown + '</div>';
-            html += '<div class="pronun-tip">' + p.tip + '</div>';
-            html += '<div class="pronun-btn">';
-            html += '<button onclick="FreeWorld.speak(\'' + p.word.replace(/'/g,"\\'") + '\')">🔊 Ouvir</button>';
-            html += '<button onclick="FreeWorld.speakSlow(\'' + p.word.replace(/'/g,"\\'") + '\')">🐢 Devagar</button>';
-            html += '</div></div>';
+            html += '<div class="pronun-breakdown">\ud83d\udde3\ufe0f ' + p.breakdown + '</div>';
+            html += '<div class="pronun-tip"><strong>' + instr.name + ':</strong> ' + p.tip + '</div>';
+            html += '<div class="pronun-btn"><button onclick="FreeWorld.speak(\'' + p.word.replace(/'/g,"\\'") + '\')">\ud83d\udd0a Ouvir</button>';
+            html += '<button onclick="FreeWorld.speakSlow(\'' + p.word.replace(/'/g,"\\'") + '\')">\ud83d\udc22 Devagar</button></div></div>';
         });
         content.innerHTML = html;
-        typeText('Pronunciation is key! Listen carefully and try to repeat each word. Focus on the sounds highlighted in the tips.');
+        typeText(instr.name + ': Repeat after me! Focus on the sounds I highlighted.');
     }
+
 
     function renderCultural(lesson) {
         const section = document.getElementById('cultural-section');
