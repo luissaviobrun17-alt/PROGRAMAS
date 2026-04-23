@@ -1,4 +1,4 @@
-﻿// FREE WORLD â€” English Mastery Course â€” Main Application
+// FREE WORLD — English Mastery Course — Main Application
 // Anti Gravity System L99
 
 const FreeWorld = (function() {
@@ -42,7 +42,7 @@ const FreeWorld = (function() {
             const nameInput = document.getElementById('student-name-input');
             if (nameInput) nameInput.value = savedName;
         }
-        console.log('ðŸŒ FREE WORLD initialized â€” Anti Gravity System L99');
+        console.log('🌍 FREE WORLD initialized — Anti Gravity System L99');
     }
 
     function setStudentName(name) {
@@ -73,7 +73,6 @@ const FreeWorld = (function() {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         const el = document.getElementById(id + '-screen');
         if (el) { el.classList.add('active'); state.currentScreen = id; }
-        // Show/hide global tools (only on app screen)
         const gt = document.querySelector('.global-tools');
         if (gt) { if (id === 'app') gt.classList.add('visible'); else gt.classList.remove('visible'); }
     }
@@ -126,8 +125,8 @@ const FreeWorld = (function() {
         renderSidebar();
         loadLesson();
         const greeting = state.studentName ? (state.studentName + ', bem-vindo(a)') : 'Bem-vindo';
-        const instrName = state.selectedInstructor === 'vinicius' ? 'vinicius' : 'Carolina';
-        addChatMessage('system', 'ðŸŒ ' + greeting + ' ao FREE WORLD! Seu instrutor Ã© ' + instrName + '. Use os comandos /NEXT, /VISUAL, /LEVEL_UP, /PRONUNCIATION ou /REVIEW para navegar.');
+        const instrName = state.selectedInstructor === 'arthur' ? 'Arthur' : 'Leticia';
+        addChatMessage('system', '🌍 ' + greeting + ' ao FREE WORLD! Seu instrutor é ' + instrName + '. Use os comandos /NEXT, /VISUAL, /LEVEL_UP, /PRONUNCIATION ou /REVIEW para navegar.');
     }
 
     // ====== PLACEMENT TEST ======
@@ -178,8 +177,8 @@ const FreeWorld = (function() {
         state.level = level;
         showScreen('placement-result');
         document.getElementById('result-level').textContent = level;
-        const descs = {A1:'Iniciante â€” Vamos comeÃ§ar do bÃ¡sico!',A2:'Elementar â€” VocÃª jÃ¡ tem uma boa base!',B1:'IntermediÃ¡rio â€” Ã“timo progresso!',B2:'IntermediÃ¡rio Superior â€” Quase fluente!',C1:'AvanÃ§ado â€” Impressionante!',C2:'Proficiente â€” VocÃª Ã© quase nativo!'};
-        document.getElementById('result-description').textContent = descs[level] + ' Acertou ' + total + ' de ' + PLACEMENT_QUESTIONS.length + ' questÃµes.';
+        const descs = {A1:'Iniciante — Vamos começar do básico!',A2:'Elementar — Você já tem uma boa base!',B1:'Intermediário — Ótimo progresso!',B2:'Intermediário Superior — Quase fluente!',C1:'Avançado — Impressionante!',C2:'Proficiente — Você é quase nativo!'};
+        document.getElementById('result-description').textContent = descs[level] + ' Acertou ' + total + ' de ' + PLACEMENT_QUESTIONS.length + ' questões.';
     }
 
     function startFromResult() { state.moduleIndex = 0; state.lessonIndex = 0; startApp(); }
@@ -219,7 +218,7 @@ const FreeWorld = (function() {
                     if (isCompleted) cls += ' completed';
                     html += '<div class="' + cls + '" onclick="FreeWorld.goToLesson(' + mi + ',' + li + ')">';
                     html += '<span class="status-dot"></span>';
-                    html += (isCompleted ? 'âœ“ ' : '') + lesson.titlePt;
+                    html += (isCompleted ? '✓ ' : '') + lesson.titlePt;
                     html += '</div>';
                 });
                 html += '</div>';
@@ -230,7 +229,7 @@ const FreeWorld = (function() {
         // Music section in sidebar
         html += '<div class="module-group">';
         html += '<div class="module-title" onclick="FreeWorld.showMusicSection()">';
-        html += '<span class="module-icon">ðŸŽµ</span> Aprenda com MÃºsicas';
+        html += '<span class="module-icon">🎵</span> Aprenda com Músicas';
         html += '</div></div>';
 
         nav.innerHTML = html;
@@ -275,7 +274,7 @@ const FreeWorld = (function() {
         });
         const pct = totalLessons > 0 ? Math.round(completedInLevel / totalLessons * 100) : 0;
         document.getElementById('header-progress-fill').style.width = pct + '%';
-        document.getElementById('header-progress-text').textContent = pct + '% concluÃ­do';
+        document.getElementById('header-progress-text').textContent = pct + '% concluído';
         document.getElementById('streak-count').textContent = state.progress.streak;
     }
 
@@ -299,15 +298,15 @@ const FreeWorld = (function() {
     function loadLesson() {
         const lesson = getLesson();
         if (!lesson) {
-            document.getElementById('lesson-content').innerHTML = '<div style="text-align:center;padding:60px"><h2>ðŸŽ‰ ParabÃ©ns!</h2><p style="color:var(--text2);margin-top:12px">VocÃª completou todas as liÃ§Ãµes deste nÃ­vel! Avance para o prÃ³ximo.</p></div>';
+            document.getElementById('lesson-content').innerHTML = '<div style="text-align:center;padding:60px"><h2>🎉 Parabéns!</h2><p style="color:var(--text2);margin-top:12px">Você completou todas as lições deste nível! Avance para o próximo.</p></div>';
             return;
         }
         state.currentStep = 0;
         // Set instructor based on student's choice
         const instructor = state.selectedInstructor || 'vinicius';
-        const isArthur = instructor === 'vinicius';
-        document.getElementById('instructor-avatar').src = isArthur ? 'assets/images/vinicius.png' : 'assets/images/carolina.png';
-        document.getElementById('instructor-name').textContent = isArthur ? 'vinicius' : 'Carolina';
+        const isVinicius = instructor === 'vinicius';
+        document.getElementById('instructor-avatar').src = isVinicius ? 'assets/images/vinicius.png' : 'assets/images/carolina.png';
+        document.getElementById('instructor-name').textContent = isVinicius ? 'Vinicius' : 'Carolina';
         document.getElementById('instructor-role').textContent = 'Instrutor PhD';
         // Render step indicators
         renderStepIndicators();
@@ -346,7 +345,7 @@ const FreeWorld = (function() {
     }
 
     function getStepName(step) {
-        const names = {intro:'IntroduÃ§Ã£o',vocabulary:'VocabulÃ¡rio',grammar:'GramÃ¡tica',dialogue:'DiÃ¡logo',pronunciation:'PronÃºncia',flashcards:'Flashcards',roleplay:'SimulaÃ§Ã£o',listening:'Escuta',cultural:'Nota Cultural',exercises:'ExercÃ­cios',summary:'Resumo'};
+        const names = {intro:'Introdução',vocabulary:'Vocabulário',grammar:'Gramática',dialogue:'Diálogo',pronunciation:'Pronúncia',flashcards:'Flashcards',roleplay:'Simulação',listening:'Escuta',cultural:'Nota Cultural',exercises:'Exercícios',summary:'Resumo'};
         return names[step] || step;
     }
 
@@ -369,7 +368,7 @@ const FreeWorld = (function() {
         });
         // Update navigation buttons
         document.getElementById('btn-prev-step').disabled = state.currentStep === 0;
-        document.getElementById('btn-next-step').textContent = state.currentStep >= steps.length - 1 ? 'Concluir âœ“' : 'PrÃ³ximo â†’';
+        document.getElementById('btn-next-step').textContent = state.currentStep >= steps.length - 1 ? 'Concluir ✓' : 'Próximo →';
 
         switch(stepName) {
             case 'intro': renderIntro(lesson); break;
@@ -392,19 +391,19 @@ const FreeWorld = (function() {
         const textEl = document.getElementById('content-text');
         const visualEl = document.getElementById('content-visual');
         // Dynamic instructor name replacement
-        const instrName = state.selectedInstructor === 'vinicius' ? 'vinicius' : 'Carolina';
+        const instrName = state.selectedInstructor === 'arthur' ? 'Arthur' : 'Leticia';
         const studentGreeting = state.studentName ? ', ' + state.studentName + '!' : '!';
-        let introText = lesson.intro.text.replace(/I'm Vinicius/g, "I'm " + instrName).replace(/Eu sou o Arthur/g, 'Eu sou ' + (state.selectedInstructor === 'vinicius' ? 'o Arthur' : 'a Leticia'));
-        let introPt = lesson.intro.textPt ? lesson.intro.textPt.replace(/Eu sou o Arthur/g, 'Eu sou ' + (state.selectedInstructor === 'vinicius' ? 'o Arthur' : 'a Leticia')) : '';
+        let introText = lesson.intro.text.replace(/I'm Arthur/g, "I'm " + instrName).replace(/Eu sou o Arthur/g, 'Eu sou ' + (state.selectedInstructor === 'arthur' ? 'o Arthur' : 'a Leticia'));
+        let introPt = lesson.intro.textPt ? lesson.intro.textPt.replace(/Eu sou o Arthur/g, 'Eu sou ' + (state.selectedInstructor === 'arthur' ? 'o Arthur' : 'a Leticia')) : '';
         // Text side
-        let textHtml = '<h4>ðŸ“š ' + lesson.title + '</h4>';
+        let textHtml = '<h4>📚 ' + lesson.title + '</h4>';
         textHtml += '<p class="en">' + introText + '</p>';
         if (state.settings.showTranslation && introPt) {
             textHtml += '<p class="pt">' + introPt + '</p>';
         }
         textEl.innerHTML = textHtml;
         // Visual side
-        visualEl.innerHTML = '<div class="visual-icon">ðŸ–¼ï¸</div><p class="visual-desc">[[IMAGEM: ' + lesson.intro.visual + ']]</p>';
+        visualEl.innerHTML = '<div class="visual-icon">🖼️</div><p class="visual-desc">[[IMAGEM: ' + lesson.intro.visual + ']]</p>';
         // Typewriter with personalized greeting
         typeText('Welcome' + studentGreeting + ' ' + introText.substring(0, 100) + '...');
     }
@@ -416,10 +415,10 @@ const FreeWorld = (function() {
         let html = '';
         lesson.vocabulary.forEach((v, i) => {
             html += '<div class="vocab-card" style="animation-delay:' + (i * 0.1) + 's">';
-            html += '<button class="btn-speak" onclick="FreeWorld.speak(\'' + v.word.replace(/'/g,"\\'") + '\')" title="Ouvir pronÃºncia">ðŸ”Š</button>';
+            html += '<button class="btn-speak" onclick="FreeWorld.speak(\'' + v.word.replace(/'/g,"\\'") + '\')" title="Ouvir pronúncia">🔊</button>';
             html += '<div class="word">' + v.word + '</div>';
             html += '<div class="ipa">' + v.ipa + '</div>';
-            html += '<div class="translation">â†’ ' + v.pt + '</div>';
+            html += '<div class="translation">→ ' + v.pt + '</div>';
             html += '<div class="example"><strong>Ex:</strong> ' + v.ex;
             if (state.settings.showTranslation && v.exPt) html += '<br><em>' + v.exPt + '</em>';
             html += '</div></div>';
@@ -429,7 +428,7 @@ const FreeWorld = (function() {
             }
         });
         container.innerHTML = html;
-        typeText('Let\'s learn some new vocabulary! Click the ðŸ”Š button to hear the pronunciation.');
+        typeText('Let\'s learn some new vocabulary! Click the 🔊 button to hear the pronunciation.');
         saveProgress();
     }
 
@@ -452,7 +451,7 @@ const FreeWorld = (function() {
         html += '</tbody></table>';
         if (lesson.grammar.tip) {
             html += '<div style="background:rgba(245,158,11,.08);border-left:3px solid var(--warm);padding:12px 16px;border-radius:0 8px 8px 0;margin-top:12px;font-size:.88rem;color:var(--warm)">';
-            html += 'ðŸ’¡ <strong>Dica:</strong> ' + lesson.grammar.tip + '</div>';
+            html += '💡 <strong>Dica:</strong> ' + lesson.grammar.tip + '</div>';
         }
         content.innerHTML = html;
         typeText('Now let\'s understand the grammar behind what we learned. Pay close attention to the patterns!');
@@ -464,11 +463,11 @@ const FreeWorld = (function() {
         const content = document.getElementById('dialogue-content');
         let html = '';
         lesson.dialogue.forEach((d, i) => {
-            const isArthur = d.speaker === 'vinicius';
+            const isVinicius = d.speaker === 'vinicius';
             html += '<div class="dialogue-bubble ' + d.speaker + '" style="animation-delay:' + (i * 0.2) + 's">';
             html += '<img class="dialogue-avatar" src="assets/images/' + d.speaker + '.png" alt="' + d.speaker + '">';
             html += '<div class="dialogue-text-wrap">';
-            html += '<div class="dialogue-name">' + (isArthur ? 'vinicius' : 'Carolina') + '</div>';
+            html += '<div class="dialogue-name">' + (isArthur ? 'Arthur' : 'Leticia') + '</div>';
             html += '<div class="dialogue-msg">' + d.text + '</div>';
             if (state.settings.showTranslation && d.textPt) {
                 html += '<div class="dialogue-translation">' + d.textPt + '</div>';
@@ -488,11 +487,11 @@ const FreeWorld = (function() {
             html += '<div class="pronun-card">';
             html += '<div class="pronun-word">' + p.word + '</div>';
             html += '<div class="pronun-ipa">' + p.ipa + '</div>';
-            html += '<div class="pronun-breakdown">ðŸ—£ï¸ ' + p.breakdown + '</div>';
+            html += '<div class="pronun-breakdown">🗣️ ' + p.breakdown + '</div>';
             html += '<div class="pronun-tip">' + p.tip + '</div>';
             html += '<div class="pronun-btn">';
-            html += '<button onclick="FreeWorld.speak(\'' + p.word.replace(/'/g,"\\'") + '\')">ðŸ”Š Ouvir</button>';
-            html += '<button onclick="FreeWorld.speakSlow(\'' + p.word.replace(/'/g,"\\'") + '\')">ðŸ¢ Devagar</button>';
+            html += '<button onclick="FreeWorld.speak(\'' + p.word.replace(/'/g,"\\'") + '\')">🔊 Ouvir</button>';
+            html += '<button onclick="FreeWorld.speakSlow(\'' + p.word.replace(/'/g,"\\'") + '\')">🐢 Devagar</button>';
             html += '</div></div>';
         });
         content.innerHTML = html;
@@ -502,7 +501,7 @@ const FreeWorld = (function() {
     function renderCultural(lesson) {
         const section = document.getElementById('cultural-section');
         section.style.display = 'block';
-        document.getElementById('cultural-title').textContent = 'ðŸŒŽ ' + lesson.cultural.title;
+        document.getElementById('cultural-title').textContent = '🌎 ' + lesson.cultural.title;
         let text = lesson.cultural.text;
         if (state.settings.showTranslation && lesson.cultural.textPt) {
             text += '<br><br><em style="color:var(--text3)">' + lesson.cultural.textPt + '</em>';
@@ -519,7 +518,7 @@ const FreeWorld = (function() {
         section.style.display = 'block';
         exerciseState = { current: 0, answers: [], score: 0, total: lesson.exercises.length };
         renderExercise(lesson.exercises[0], 0, lesson);
-        typeText('Time to practice! Answer the exercises to test your knowledge. Good luck! ðŸ’ª');
+        typeText('Time to practice! Answer the exercises to test your knowledge. Good luck! 💪');
     }
 
     function renderExercise(ex, idx, lesson) {
@@ -527,7 +526,7 @@ const FreeWorld = (function() {
         const fb = document.getElementById('exercise-feedback');
         fb.style.display = 'none';
         let html = '<div class="exercise-card">';
-        html += '<div class="ex-type">' + getExTypeName(ex.type) + ' â€” ExercÃ­cio ' + (idx + 1) + ' de ' + lesson.exercises.length + '</div>';
+        html += '<div class="ex-type">' + getExTypeName(ex.type) + ' — Exercício ' + (idx + 1) + ' de ' + lesson.exercises.length + '</div>';
 
         if (ex.type === 'mc') {
             html += '<div class="ex-question">' + ex.question + '</div>';
@@ -547,7 +546,7 @@ const FreeWorld = (function() {
                 }
             });
             html += '</div>';
-            html += '<button class="btn btn-primary ex-submit" onclick="FreeWorld.checkFill()">Verificar âœ“</button>';
+            html += '<button class="btn btn-primary ex-submit" onclick="FreeWorld.checkFill()">Verificar ✓</button>';
         } else if (ex.type === 'order') {
             html += '<div class="ex-question">Ordene as palavras para formar a frase correta:</div>';
             if (state.settings.showTranslation && ex.translation) {
@@ -560,7 +559,7 @@ const FreeWorld = (function() {
                 html += '<span class="ex-word" draggable="true" data-word="' + w + '" onclick="FreeWorld.clickWord(this)">' + w + '</span>';
             });
             html += '</div>';
-            html += '<button class="btn btn-primary ex-submit" onclick="FreeWorld.checkOrder()">Verificar âœ“</button>';
+            html += '<button class="btn btn-primary ex-submit" onclick="FreeWorld.checkOrder()">Verificar ✓</button>';
         }
         html += '</div>';
         content.innerHTML = html;
@@ -570,7 +569,7 @@ const FreeWorld = (function() {
     }
 
     function getExTypeName(type) {
-        const names = {mc:'MÃºltipla Escolha',fill:'Preencher Lacunas',order:'Ordenar Palavras',translate:'TraduÃ§Ã£o'};
+        const names = {mc:'Múltipla Escolha',fill:'Preencher Lacunas',order:'Ordenar Palavras',translate:'Tradução'};
         return names[type] || type;
     }
 
@@ -605,7 +604,7 @@ const FreeWorld = (function() {
             }
         });
         if (allCorrect) exerciseState.score++;
-        showExerciseFeedback(allCorrect, allCorrect ? '' : 'As respostas corretas foram preenchidas para vocÃª.');
+        showExerciseFeedback(allCorrect, allCorrect ? '' : 'As respostas corretas foram preenchidas para você.');
     }
 
     function clickWord(el) {
@@ -641,17 +640,17 @@ const FreeWorld = (function() {
         const fb = document.getElementById('exercise-feedback');
         fb.style.display = 'block';
         fb.className = 'exercise-feedback ' + (correct ? 'correct' : 'wrong');
-        let html = '<div class="fb-icon">' + (correct ? 'âœ…' : 'âŒ') + '</div>';
-        html += '<div class="fb-text">' + (correct ? 'Excelente! Resposta correta!' : 'NÃ£o foi dessa vez...') + '</div>';
+        let html = '<div class="fb-icon">' + (correct ? '✅' : '❌') + '</div>';
+        html += '<div class="fb-text">' + (correct ? 'Excelente! Resposta correta!' : 'Não foi dessa vez...') + '</div>';
         if (explanation) html += '<div style="margin-top:8px;font-size:.85rem;color:var(--text3)">' + explanation + '</div>';
         // Next exercise button
         const lesson = exerciseState.currentLesson;
         const nextIdx = exerciseState.current + 1;
         if (nextIdx < lesson.exercises.length) {
-            html += '<button class="btn btn-primary" style="margin-top:12px" onclick="FreeWorld.nextExercise()">PrÃ³ximo ExercÃ­cio â†’</button>';
+            html += '<button class="btn btn-primary" style="margin-top:12px" onclick="FreeWorld.nextExercise()">Próximo Exercício →</button>';
         } else {
             html += '<div style="margin-top:12px;font-size:1rem;font-weight:700">Resultado: ' + exerciseState.score + '/' + exerciseState.total + ' (' + Math.round(exerciseState.score/exerciseState.total*100) + '%)</div>';
-            html += '<button class="btn btn-primary" style="margin-top:12px" onclick="FreeWorld.nextStep()">Continuar â†’</button>';
+            html += '<button class="btn btn-primary" style="margin-top:12px" onclick="FreeWorld.nextStep()">Continuar →</button>';
             // Save score
             const lessonObj = getLesson();
             if (lessonObj) {
@@ -679,7 +678,7 @@ const FreeWorld = (function() {
         const wordsCount = lesson.vocabulary ? lesson.vocabulary.length : 0;
         stats.innerHTML = '<div class="summary-stat"><div class="val">' + wordsCount + '</div><div class="lbl">Palavras</div></div>'
             + '<div class="summary-stat"><div class="val">' + score + '%</div><div class="lbl">Acertos</div></div>'
-            + '<div class="summary-stat"><div class="val">â­</div><div class="lbl">' + (score >= 80 ? 'Ã“timo!' : 'Continue!') + '</div></div>';
+            + '<div class="summary-stat"><div class="val">⭐</div><div class="lbl">' + (score >= 80 ? 'Ótimo!' : 'Continue!') + '</div></div>';
         // Mark lesson as completed
         if (!state.progress.completedLessons.includes(lesson.id)) {
             state.progress.completedLessons.push(lesson.id);
@@ -689,7 +688,7 @@ const FreeWorld = (function() {
         updateHeader();
         updateSidebarStats();
         renderSidebar();
-        typeText('Congratulations! You completed this lesson! ðŸŽ‰ Keep going â€” you\'re doing amazing!');
+        typeText('Congratulations! You completed this lesson! 🎉 Keep going — you\'re doing amazing!');
     }
 
     // ====== STEP NAVIGATION ======
@@ -723,7 +722,7 @@ const FreeWorld = (function() {
             state.moduleIndex++;
             state.lessonIndex = 0;
         } else {
-            // Level complete â€” suggest next level
+            // Level complete — suggest next level
             const levels = Object.keys(COURSE_DATA);
             const nextLevelIdx = levels.indexOf(state.level) + 1;
             if (nextLevelIdx < levels.length) {
@@ -753,8 +752,8 @@ const FreeWorld = (function() {
             if (el) el.style.display = 'none';
         });
         let html = '<div class="music-section">';
-        html += '<h3 class="section-title">ðŸŽµ Aprenda InglÃªs com MÃºsicas</h3>';
-        html += '<p style="color:var(--text2);margin-bottom:20px">Escolha uma mÃºsica para estudar. Arthur e leticia vÃ£o contar a histÃ³ria, explicar a letra e criar exercÃ­cios especiais!</p>';
+        html += '<h3 class="section-title">🎵 Aprenda Inglês com Músicas</h3>';
+        html += '<p style="color:var(--text2);margin-bottom:20px">Escolha uma música para estudar. Arthur e leticia vão contar a história, explicar a letra e criar exercícios especiais!</p>';
         MUSIC_LIBRARY.forEach(song => {
             html += '<div class="music-card" id="music-' + song.id + '">';
             html += '<div class="music-header" onclick="FreeWorld.toggleSong(\'' + song.id + '\')" style="cursor:pointer">';
@@ -764,22 +763,22 @@ const FreeWorld = (function() {
             html += '<div class="music-body" id="music-body-' + song.id + '" style="display:none">';
             // Story from Arthur & leticia
             html += '<div class="music-story">';
-            html += '<h4 style="color:var(--accent3);margin-bottom:12px">ðŸ“– A HistÃ³ria da MÃºsica</h4>';
+            html += '<h4 style="color:var(--accent3);margin-bottom:12px">📖 A História da Música</h4>';
             html += '<div style="display:flex;gap:12px;margin-bottom:16px;align-items:flex-start">';
-            html += '<img src="assets/images/vinicius.png" style="width:40px;height:40px;border-radius:50%;object-fit:cover">';
-            html += '<div><strong style="color:var(--accent3)">Vinicius:</strong><p style="color:var(--text2);margin-top:4px;font-size:.9rem;line-height:1.6">' + song.story.arthur + '</p>';
+            html += '<img src="assets/images/arthur.png" style="width:40px;height:40px;border-radius:50%;object-fit:cover">';
+            html += '<div><strong style="color:var(--accent3)">Arthur:</strong><p style="color:var(--text2);margin-top:4px;font-size:.9rem;line-height:1.6">' + song.story.arthur + '</p>';
             html += '<p style="color:var(--text3);font-style:italic;font-size:.82rem;margin-top:6px">' + song.story.storyPt + '</p></div></div>';
             html += '<div style="display:flex;gap:12px;align-items:flex-start">';
-            html += '<img src="assets/images/carolina.png" style="width:40px;height:40px;border-radius:50%;object-fit:cover">';
-            html += '<div><strong style="color:var(--accent2)">Carolina:</strong><p style="color:var(--text2);margin-top:4px;font-size:.9rem;line-height:1.6">' + song.story.leticia + '</p></div></div>';
+            html += '<img src="assets/images/leticia.png" style="width:40px;height:40px;border-radius:50%;object-fit:cover">';
+            html += '<div><strong style="color:var(--accent2)">leticia:</strong><p style="color:var(--text2);margin-top:4px;font-size:.9rem;line-height:1.6">' + song.story.leticia + '</p></div></div>';
             html += '</div>';
             // Lyrics side by side
             html += '<div class="music-lyrics">';
-            html += '<div class="lyrics-col"><h5>ðŸ‡¬ðŸ‡§ English</h5>';
+            html += '<div class="lyrics-col"><h5>🇬🇧 English</h5>';
             song.lyrics.forEach((l, i) => {
                 html += '<div class="lyrics-line" onclick="FreeWorld.speak(\'' + l.en.replace(/'/g,"\\'") + '\')" title="Clique para ouvir">' + l.en + '</div>';
             });
-            html += '</div><div class="lyrics-col"><h5>ðŸ‡§ðŸ‡· PortuguÃªs</h5>';
+            html += '</div><div class="lyrics-col"><h5>🇧🇷 Português</h5>';
             song.lyrics.forEach(l => {
                 html += '<div class="lyrics-line">' + l.pt + '</div>';
             });
@@ -787,14 +786,14 @@ const FreeWorld = (function() {
             // Vocabulary
             if (song.vocabulary) {
                 html += '<div style="padding:20px;border-top:1px solid rgba(255,255,255,.05)">';
-                html += '<h4 style="color:var(--accent3);margin-bottom:12px">ðŸ“– VocabulÃ¡rio da MÃºsica</h4>';
+                html += '<h4 style="color:var(--accent3);margin-bottom:12px">📖 Vocabulário da Música</h4>';
                 html += '<div class="vocab-cards">';
                 song.vocabulary.forEach(v => {
                     html += '<div class="vocab-card">';
-                    html += '<button class="btn-speak" onclick="FreeWorld.speak(\'' + v.word.replace(/'/g,"\\'") + '\')">ðŸ”Š</button>';
+                    html += '<button class="btn-speak" onclick="FreeWorld.speak(\'' + v.word.replace(/'/g,"\\'") + '\')">🔊</button>';
                     html += '<div class="word">' + v.word + '</div>';
                     html += '<div class="ipa">' + v.ipa + '</div>';
-                    html += '<div class="translation">â†’ ' + v.pt + '</div>';
+                    html += '<div class="translation">→ ' + v.pt + '</div>';
                     html += '<div class="example"><strong>Ex:</strong> ' + v.ex + '</div>';
                     html += '</div>';
                 });
@@ -803,7 +802,7 @@ const FreeWorld = (function() {
             // Exercises
             if (song.exercises) {
                 html += '<div class="music-exercises">';
-                html += '<h4 style="color:var(--accent3);margin-bottom:12px">ðŸŽ¯ ExercÃ­cios da MÃºsica</h4>';
+                html += '<h4 style="color:var(--accent3);margin-bottom:12px">🎯 Exercícios da Música</h4>';
                 song.exercises.forEach((ex, ei) => {
                     html += '<div class="exercise-card" style="margin-bottom:12px">';
                     html += '<div class="ex-type">' + getExTypeName(ex.type) + '</div>';
@@ -816,7 +815,7 @@ const FreeWorld = (function() {
                         html += '</div>';
                     } else if (ex.type === 'fill' || ex.type === 'translate') {
                         html += '<input type="text" class="ex-fill-input" id="music-ex-' + song.id + '-' + ei + '" placeholder="' + (ex.hint || 'Digite sua resposta...') + '">';
-                        html += '<button class="btn btn-primary ex-submit" onclick="FreeWorld.checkMusicFill(\'' + song.id + '\',' + ei + ',\'' + ex.a.replace(/'/g,"\\'") + '\')">Verificar âœ“</button>';
+                        html += '<button class="btn btn-primary ex-submit" onclick="FreeWorld.checkMusicFill(\'' + song.id + '\',' + ei + ',\'' + ex.a.replace(/'/g,"\\'") + '\')">Verificar ✓</button>';
                     }
                     html += '</div>';
                 });
@@ -837,7 +836,7 @@ const FreeWorld = (function() {
         }
         musicDiv.innerHTML = html;
         musicDiv.style.display = 'block';
-        typeText('ðŸŽµ Welcome to the Music Room! Choose a song and let\'s learn English through music!');
+        typeText('🎵 Welcome to the Music Room! Choose a song and let\'s learn English through music!');
     }
 
     function toggleSong(id) {
@@ -910,7 +909,7 @@ const FreeWorld = (function() {
 
     function toggleMic() {
         if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
-            addChatMessage('system', 'âš ï¸ Seu navegador nÃ£o suporta reconhecimento de voz. Use o Chrome para esta funcionalidade.');
+            addChatMessage('system', '⚠️ Seu navegador não suporta reconhecimento de voz. Use o Chrome para esta funcionalidade.');
             return;
         }
         const btn = document.getElementById('btn-mic');
@@ -928,15 +927,15 @@ const FreeWorld = (function() {
         state.recognition.onresult = function(e) {
             const text = e.results[0][0].transcript;
             document.getElementById('chat-input').value = text;
-            addChatMessage('user', 'ðŸŽ¤ ' + text);
-            addChatMessage('vinicius', 'I heard you say: "' + text + '". ' + (e.results[0][0].confidence > 0.8 ? 'Great pronunciation! ðŸ‘' : 'Good try! Keep practicing! ðŸ’ª'));
+            addChatMessage('user', '🎤 ' + text);
+            addChatMessage('arthur', 'I heard you say: "' + text + '". ' + (e.results[0][0].confidence > 0.8 ? 'Great pronunciation! 👏' : 'Good try! Keep practicing! 💪'));
         };
         state.recognition.onend = function() { state.isRecording = false; btn.classList.remove('recording'); };
         state.recognition.onerror = function() { state.isRecording = false; btn.classList.remove('recording'); };
         state.isRecording = true;
         btn.classList.add('recording');
         state.recognition.start();
-        addChatMessage('system', 'ðŸŽ¤ Gravando... Fale em inglÃªs!');
+        addChatMessage('system', '🎤 Gravando... Fale em inglês!');
     }
 
     // ====== CHAT ======
@@ -951,22 +950,22 @@ const FreeWorld = (function() {
         setTimeout(() => {
             const lower = text.toLowerCase();
             if (lower.includes('hello') || lower.includes('hi')) {
-                addChatMessage('vinicius', 'Hello! Great to hear from you! How are you doing today? ðŸ˜Š');
+                addChatMessage('arthur', 'Hello! Great to hear from you! How are you doing today? 😊');
             } else if (lower.includes('how are you')) {
-                addChatMessage('Carolina', 'I\'m doing wonderful, thank you for asking! And you? Try to answer in English! ðŸ˜Š');
+                addChatMessage('Leticia', 'I\'m doing wonderful, thank you for asking! And you? Try to answer in English! 😊');
             } else if (lower.includes('thank')) {
-                addChatMessage('vinicius', 'You\'re welcome! Keep up the great work! ðŸ’ª');
+                addChatMessage('arthur', 'You\'re welcome! Keep up the great work! 💪');
             } else if (lower.includes('help')) {
-                addChatMessage('system', 'Comandos disponÃ­veis: /NEXT, /VISUAL, /LEVEL_UP, /PRONUNCIATION, /REVIEW, /PROGRESS');
+                addChatMessage('system', 'Comandos disponíveis: /NEXT, /VISUAL, /LEVEL_UP, /PRONUNCIATION, /REVIEW, /PROGRESS');
             } else {
                 const responses = [
-                    'Good job writing in English! Keep practicing! ðŸ‘',
-                    'Excellent! Your English is improving! ðŸŒŸ',
-                    'That\'s a great sentence! Try using it in a real conversation! ðŸ’¬',
-                    'Well done! Remember to practice pronunciation too! ðŸ”Š',
-                    'Nice! Every sentence you write makes you better! ðŸ“ˆ'
+                    'Good job writing in English! Keep practicing! 👏',
+                    'Excellent! Your English is improving! 🌟',
+                    'That\'s a great sentence! Try using it in a real conversation! 💬',
+                    'Well done! Remember to practice pronunciation too! 🔊',
+                    'Nice! Every sentence you write makes you better! 📈'
                 ];
-                addChatMessage(Math.random() > 0.5 ? 'vinicius' : 'Carolina', responses[Math.floor(Math.random() * responses.length)]);
+                addChatMessage(Math.random() > 0.5 ? 'arthur' : 'Leticia', responses[Math.floor(Math.random() * responses.length)]);
             }
         }, 500);
     }
@@ -975,37 +974,37 @@ const FreeWorld = (function() {
         const command = cmd.toUpperCase().replace('/','');
         addChatMessage('user', cmd);
         switch(command) {
-            case 'NEXT': nextStep(); addChatMessage('system', 'â­ï¸ AvanÃ§ando...'); break;
+            case 'NEXT': nextStep(); addChatMessage('system', '⏭️ Avançando...'); break;
             case 'VISUAL':
-                addChatMessage('vinicius', '[[VISUAL EXPANDIDO]] Let me paint a more detailed picture for you...');
+                addChatMessage('arthur', '[[VISUAL EXPANDIDO]] Let me paint a more detailed picture for you...');
                 const lesson = getLesson();
-                if (lesson && lesson.intro) addChatMessage('system', 'ðŸ–¼ï¸ ' + lesson.intro.visual);
+                if (lesson && lesson.intro) addChatMessage('system', '🖼️ ' + lesson.intro.visual);
                 break;
             case 'LEVEL_UP':
                 const levels = Object.keys(COURSE_DATA);
                 const nextIdx = levels.indexOf(state.level) + 1;
                 if (nextIdx < levels.length) {
                     changeLevel(levels[nextIdx]);
-                    addChatMessage('system', 'â¬†ï¸ NÃ­vel aumentado para ' + levels[nextIdx] + '!');
+                    addChatMessage('system', '⬆️ Nível aumentado para ' + levels[nextIdx] + '!');
                 } else {
-                    addChatMessage('system', 'ðŸ‘‘ VocÃª jÃ¡ estÃ¡ no nÃ­vel mÃ¡ximo!');
+                    addChatMessage('system', '👑 Você já está no nível máximo!');
                 }
                 break;
             case 'PRONUNCIATION':
-                addChatMessage('Carolina', 'ðŸ”Š Let\'s focus on pronunciation! Listen carefully and repeat after me.');
+                addChatMessage('Leticia', '🔊 Let\'s focus on pronunciation! Listen carefully and repeat after me.');
                 const l = getLesson();
                 if (l && l.pronunciation) {
                     l.pronunciation.forEach(p => speak(p.word));
-                    addChatMessage('system', 'ðŸ”Š Reproduzindo palavras-chave... Repita apÃ³s ouvir!');
+                    addChatMessage('system', '🔊 Reproduzindo palavras-chave... Repita após ouvir!');
                 }
                 break;
             case 'REVIEW':
                 state.currentStep = 0;
                 renderCurrentStep();
-                addChatMessage('system', 'ðŸ”„ Revisando a liÃ§Ã£o do inÃ­cio...');
+                addChatMessage('system', '🔄 Revisando a lição do início...');
                 break;
             case 'PROGRESS': showProgress(); break;
-            default: addChatMessage('system', 'â“ Comando nÃ£o reconhecido. Use: /NEXT, /VISUAL, /LEVEL_UP, /PRONUNCIATION, /REVIEW');
+            default: addChatMessage('system', '❓ Comando não reconhecido. Use: /NEXT, /VISUAL, /LEVEL_UP, /PRONUNCIATION, /REVIEW');
         }
     }
 
@@ -1014,7 +1013,7 @@ const FreeWorld = (function() {
         if (!container) return;
         const div = document.createElement('div');
         div.className = 'chat-msg ' + type;
-        const prefix = type === 'vinicius' ? 'ðŸŽ“ Vinicius: ' : type === 'Carolina' ? 'ðŸ‘©â€ðŸ« Carolina: ' : type === 'system' ? '' : '';
+        const prefix = type === 'vinicius' ? '🎓 Vinicius: ' : type === 'carolina' ? '👩‍🏫 Carolina: ' : type === 'system' ? '' : '';
         div.textContent = prefix + text;
         container.appendChild(div);
         container.scrollTop = container.scrollHeight;
@@ -1026,7 +1025,7 @@ const FreeWorld = (function() {
         document.getElementById('prog-total-lessons').textContent = state.progress.completedLessons.length;
         document.getElementById('prog-total-words').textContent = state.progress.wordsLearned.length;
         const scores = Object.values(state.progress.scores);
-        document.getElementById('prog-accuracy').textContent = scores.length > 0 ? Math.round(scores.reduce((a,b)=>a+b,0)/scores.length) + '%' : 'â€”';
+        document.getElementById('prog-accuracy').textContent = scores.length > 0 ? Math.round(scores.reduce((a,b)=>a+b,0)/scores.length) + '%' : '—';
         document.getElementById('prog-streak').textContent = state.progress.streak;
         const elapsed = Math.round((Date.now() - (state.progress.startTime || Date.now())) / 3600000);
         document.getElementById('prog-time').textContent = elapsed > 0 ? elapsed + 'h' : '<1h';
@@ -1119,18 +1118,18 @@ const FreeWorld = (function() {
             {id:'vocab_50', cond: p.wordsLearned.length >= 50},
             {id:'vocab_100', cond: p.wordsLearned.length >= 100}
         ];
-        checks.forEach(c => { if (c.cond && !p.achievements.includes(c.id)) { p.achievements.push(c.id); addChatMessage('system', 'ðŸ† Nova conquista desbloqueada!'); } });
+        checks.forEach(c => { if (c.cond && !p.achievements.includes(c.id)) { p.achievements.push(c.id); addChatMessage('system', '🏆 Nova conquista desbloqueada!'); } });
         saveProgress();
     }
 
     function resetProgress() {
-        if (confirm('Tem certeza que deseja resetar todo o progresso? Esta aÃ§Ã£o nÃ£o pode ser desfeita.')) {
+        if (confirm('Tem certeza que deseja resetar todo o progresso? Esta ação não pode ser desfeita.')) {
             localStorage.removeItem('freeworld_progress');
             state.progress = { completedLessons:[], wordsLearned:[], scores:{}, streak:0, lastDate:null, totalTime:0, achievements:[], startTime:Date.now() };
             state.level = 'A1'; state.moduleIndex = 0; state.lessonIndex = 0;
             closeAllModals();
             updateHeader(); renderSidebar(); loadLesson();
-            addChatMessage('system', 'ðŸ”„ Progresso resetado. ComeÃ§ando do zero!');
+            addChatMessage('system', '🔄 Progresso resetado. Começando do zero!');
         }
     }
 
@@ -1143,7 +1142,7 @@ const FreeWorld = (function() {
         // Shuffle
         for(let i=fcState.cards.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[fcState.cards[i],fcState.cards[j]]=[fcState.cards[j],fcState.cards[i]];}
         showFlashcard();
-        typeText('ðŸƒ Flashcards! Clique no card para virar. Teste se vocÃª aprendeu o vocabulÃ¡rio!');
+        typeText('🃏 Flashcards! Clique no card para virar. Teste se você aprendeu o vocabulário!');
     }
 
     function showFlashcard() {
@@ -1156,7 +1155,7 @@ const FreeWorld = (function() {
         document.getElementById('fc-back').innerHTML = '<div style="font-size:1.3rem;margin-bottom:8px">' + card.back.replace('\n','<br>') + '</div><div style="font-size:.82rem;color:var(--text2);font-style:italic">"' + card.ex + '"</div>';
         document.getElementById('flashcard-counter').textContent = (fcState.idx+1) + '/' + fcState.cards.length;
         document.getElementById('fc-bar-fill').style.width = ((fcState.idx)/fcState.cards.length*100) + '%';
-        document.getElementById('flashcard-score').textContent = 'âœ… ' + fcState.correct + '  âŒ ' + fcState.wrong;
+        document.getElementById('flashcard-score').textContent = '✅ ' + fcState.correct + '  ❌ ' + fcState.wrong;
     }
 
     function flipFlashcard() {
@@ -1175,9 +1174,9 @@ const FreeWorld = (function() {
 
     function showFlashcardResult() {
         const pct = Math.round(fcState.correct / fcState.cards.length * 100);
-        document.getElementById('flashcard-card').innerHTML = '<div class="fc-front" style="transform:none;backface-visibility:visible"><div style="font-size:2.5rem;margin-bottom:12px">' + (pct >= 80 ? 'ðŸ†' : pct >= 50 ? 'ðŸ‘' : 'ðŸ“š') + '</div><div style="font-size:1.3rem;font-weight:700">Resultado: ' + fcState.correct + '/' + fcState.cards.length + '</div><div style="color:var(--text2);margin-top:8px">' + pct + '% correto</div><div style="margin-top:12px;font-size:.85rem;color:var(--text3)">' + (pct >= 80 ? 'Excelente! VocabulÃ¡rio dominado!' : 'Continue praticando â€” revisÃ£o Ã© a chave!') + '</div></div>';
+        document.getElementById('flashcard-card').innerHTML = '<div class="fc-front" style="transform:none;backface-visibility:visible"><div style="font-size:2.5rem;margin-bottom:12px">' + (pct >= 80 ? '🏆' : pct >= 50 ? '👍' : '📚') + '</div><div style="font-size:1.3rem;font-weight:700">Resultado: ' + fcState.correct + '/' + fcState.cards.length + '</div><div style="color:var(--text2);margin-top:8px">' + pct + '% correto</div><div style="margin-top:12px;font-size:.85rem;color:var(--text3)">' + (pct >= 80 ? 'Excelente! Vocabulário dominado!' : 'Continue praticando — revisão é a chave!') + '</div></div>';
         document.getElementById('fc-bar-fill').style.width = '100%';
-        document.getElementById('flashcard-score').textContent = 'âœ… ' + fcState.correct + '  âŒ ' + fcState.wrong;
+        document.getElementById('flashcard-score').textContent = '✅ ' + fcState.correct + '  ❌ ' + fcState.wrong;
     }
 
     // ====== ROLE-PLAY ======
@@ -1186,8 +1185,8 @@ const FreeWorld = (function() {
     function renderRoleplay(lesson) {
         document.getElementById('roleplay-section').style.display = 'block';
         // Generate roleplay from lesson dialogue + vocabulary
-        const instrName = state.selectedInstructor === 'vinicius' ? 'vinicius' : 'Carolina';
-        const instrImg = state.selectedInstructor === 'vinicius' ? 'assets/images/vinicius.png' : 'assets/images/carolina.png';
+        const instrName = state.selectedInstructor === 'vinicius' ? 'Vinicius' : 'Carolina';
+        const instrImg = 'assets/images/' + state.selectedInstructor + '.png';
         rpState = { steps:[], idx:0, score:0 };
         // Create roleplay scenarios from dialogue
         const dlg = lesson.dialogue;
@@ -1202,7 +1201,7 @@ const FreeWorld = (function() {
                 wrongOptions.push('Sorry, what did you say?');
             }
             rpState.steps.push({
-                speaker: q.speaker === 'vinicius' ? instrName : instrName,
+                speaker: q.speaker === 'arthur' ? instrName : instrName,
                 speakerImg: instrImg,
                 text: q.text,
                 textPt: q.textPt,
@@ -1212,7 +1211,7 @@ const FreeWorld = (function() {
             });
         }
         showRoleplayStep();
-        typeText('ðŸŽ­ Hora da simulaÃ§Ã£o! Escolha a melhor resposta para cada situaÃ§Ã£o.');
+        typeText('🎭 Hora da simulação! Escolha a melhor resposta para cada situação.');
     }
 
     function shuffle(arr) { const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a; }
@@ -1225,7 +1224,7 @@ const FreeWorld = (function() {
         html += '<div class="rp-bubble"><img class="rp-avatar" src="' + step.speakerImg + '"><div class="rp-msg"><strong>' + step.speaker + ':</strong> ' + step.text;
         if (state.settings.showTranslation && step.textPt) html += '<br><em style="font-size:.8rem;color:var(--text3)">' + step.textPt + '</em>';
         html += '</div></div></div>';
-        html += '<p style="color:var(--accent3);font-weight:600;margin-bottom:8px">ðŸ’¬ Como vocÃª responderia?</p>';
+        html += '<p style="color:var(--accent3);font-weight:600;margin-bottom:8px">💬 Como você responderia?</p>';
         html += '<div class="rp-options">';
         step.options.forEach((opt, i) => {
             html += '<div class="rp-option" onclick="FreeWorld.answerRoleplay(' + i + ')" data-idx="' + i + '">' + opt + '</div>';
@@ -1250,7 +1249,7 @@ const FreeWorld = (function() {
         let fb = '<div class="rp-bubble student" style="margin-top:12px"><div class="rp-msg">' + step.correct;
         if (state.settings.showTranslation && step.correctPt) fb += '<br><em style="font-size:.8rem;color:var(--text3)">' + step.correctPt + '</em>';
         fb += '</div></div>';
-        fb += '<div style="text-align:center;margin-top:16px"><button class="btn btn-primary" onclick="FreeWorld.nextRoleplay()">Continuar â†’</button></div>';
+        fb += '<div style="text-align:center;margin-top:16px"><button class="btn btn-primary" onclick="FreeWorld.nextRoleplay()">Continuar →</button></div>';
         container.innerHTML += fb;
     }
 
@@ -1262,7 +1261,7 @@ const FreeWorld = (function() {
     function showRoleplayResult() {
         const pct = rpState.steps.length > 0 ? Math.round(rpState.score / rpState.steps.length * 100) : 0;
         const container = document.getElementById('roleplay-container');
-        container.innerHTML = '<div style="text-align:center;padding:30px"><div style="font-size:3rem;margin-bottom:12px">' + (pct >= 80 ? 'ðŸŽ‰' : 'ðŸ’ª') + '</div><h3>SimulaÃ§Ã£o ConcluÃ­da!</h3><p style="color:var(--text2);margin-top:8px">VocÃª acertou ' + rpState.score + '/' + rpState.steps.length + ' (' + pct + '%)</p><p style="color:var(--text3);font-size:.85rem;margin-top:8px">' + (pct >= 80 ? 'Excelente! VocÃª mandou muito bem no diÃ¡logo!' : 'Continue praticando! A fluÃªncia vem com a prÃ¡tica.') + '</p></div>';
+        container.innerHTML = '<div style="text-align:center;padding:30px"><div style="font-size:3rem;margin-bottom:12px">' + (pct >= 80 ? '🎉' : '💪') + '</div><h3>Simulação Concluída!</h3><p style="color:var(--text2);margin-top:8px">Você acertou ' + rpState.score + '/' + rpState.steps.length + ' (' + pct + '%)</p><p style="color:var(--text3);font-size:.85rem;margin-top:8px">' + (pct >= 80 ? 'Excelente! Você mandou muito bem no diálogo!' : 'Continue praticando! A fluência vem com a prática.') + '</p></div>';
     }
 
     // ====== LISTENING CHALLENGE ======
@@ -1278,7 +1277,7 @@ const FreeWorld = (function() {
         // Shuffle and limit to 5
         listenState.phrases = shuffle(listenState.phrases).slice(0, 5);
         showListenChallenge();
-        typeText('ðŸ‘‚ Desafio de Escuta! OuÃ§a e escreva o que ouvir. Treine seu ouvido!');
+        typeText('👂 Desafio de Escuta! Ouça e escreva o que ouvir. Treine seu ouvido!');
     }
 
     function showListenChallenge() {
@@ -1287,13 +1286,13 @@ const FreeWorld = (function() {
         if (!phrase) { showListenResult(); return; }
         let html = '<div class="listen-card">';
         html += '<div style="font-size:.85rem;color:var(--text3);margin-bottom:12px">Frase ' + (listenState.idx+1) + ' de ' + listenState.phrases.length + '</div>';
-        html += '<button class="listen-btn" onclick="FreeWorld.playListenPhrase()" title="Ouvir frase">ðŸ”Š</button>';
+        html += '<button class="listen-btn" onclick="FreeWorld.playListenPhrase()" title="Ouvir frase">🔊</button>';
         html += '<p style="color:var(--text2);font-size:.85rem;margin-bottom:12px">Clique para ouvir, depois escreva o que ouviu</p>';
         if (state.settings.showTranslation && phrase.hint) {
             html += '<p style="color:var(--text3);font-size:.8rem;font-style:italic;margin-bottom:12px">Dica: ' + phrase.hint + '</p>';
         }
         html += '<input type="text" class="listen-input" id="listen-input" placeholder="Escreva o que ouviu..." onkeydown="if(event.key===\'Enter\')FreeWorld.checkListen()">';
-        html += '<button class="btn btn-primary" onclick="FreeWorld.checkListen()">Verificar âœ“</button>';
+        html += '<button class="btn btn-primary" onclick="FreeWorld.checkListen()">Verificar ✓</button>';
         html += '<div id="listen-feedback"></div>';
         html += '</div>';
         container.innerHTML = html;
@@ -1313,8 +1312,8 @@ const FreeWorld = (function() {
         const isCorrect = val === expected || expected.includes(val) && val.length > expected.length * 0.6;
         if (isCorrect) listenState.score++;
         const fb = document.getElementById('listen-feedback');
-        fb.innerHTML = '<div class="listen-result ' + (isCorrect ? 'correct' : 'wrong') + '">' + (isCorrect ? 'âœ… Correto!' : 'âŒ Resposta: "' + phrase.answer + '"') + '</div>';
-        fb.innerHTML += '<div style="text-align:center;margin-top:12px"><button class="btn btn-primary" onclick="FreeWorld.nextListen()">PrÃ³xima â†’</button></div>';
+        fb.innerHTML = '<div class="listen-result ' + (isCorrect ? 'correct' : 'wrong') + '">' + (isCorrect ? '✅ Correto!' : '❌ Resposta: "' + phrase.answer + '"') + '</div>';
+        fb.innerHTML += '<div style="text-align:center;margin-top:12px"><button class="btn btn-primary" onclick="FreeWorld.nextListen()">Próxima →</button></div>';
         input.disabled = true;
         input.value = phrase.answer;
         input.style.color = isCorrect ? 'var(--success)' : 'var(--error)';
@@ -1328,7 +1327,7 @@ const FreeWorld = (function() {
     function showListenResult() {
         const pct = listenState.phrases.length > 0 ? Math.round(listenState.score / listenState.phrases.length * 100) : 0;
         const container = document.getElementById('listening-container');
-        container.innerHTML = '<div style="text-align:center;padding:30px"><div style="font-size:3rem;margin-bottom:12px">' + (pct >= 80 ? 'ðŸ‘‚ðŸ†' : 'ðŸ‘‚ðŸ’ª') + '</div><h3>Escuta ConcluÃ­da!</h3><p style="color:var(--text2);margin-top:8px">' + listenState.score + '/' + listenState.phrases.length + ' corretas (' + pct + '%)</p></div>';
+        container.innerHTML = '<div style="text-align:center;padding:30px"><div style="font-size:3rem;margin-bottom:12px">' + (pct >= 80 ? '👂🏆' : '👂💪') + '</div><h3>Escuta Concluída!</h3><p style="color:var(--text2);margin-top:8px">' + listenState.score + '/' + listenState.phrases.length + ' corretas (' + pct + '%)</p></div>';
     }
 
     // ====== DICTIONARY ======
@@ -1366,17 +1365,17 @@ const FreeWorld = (function() {
             count.textContent = '';
             return;
         }
-        const typeNames = {noun:'Substantivo',verb:'Verbo',adj:'Adjetivo',adv:'AdvÃ©rbio',phrase:'Frase'};
+        const typeNames = {noun:'Substantivo',verb:'Verbo',adj:'Adjetivo',adv:'Advérbio',phrase:'Frase'};
         let html = '';
         entries.forEach(e => {
             html += '<div class="dict-entry">';
             html += '<div>';
             html += '<div class="dict-word">' + e.w + ' <span class="dict-ipa">' + e.ipa + '</span></div>';
             html += '<span class="dict-type">' + (typeNames[e.t] || e.t) + '</span>';
-            html += '<div class="dict-translation">â†’ ' + e.pt + '</div>';
+            html += '<div class="dict-translation">→ ' + e.pt + '</div>';
             html += '<div class="dict-example">"' + e.ex + '"</div>';
             html += '</div>';
-            html += '<button class="dict-speak" onclick="FreeWorld.speak(\'' + e.w.replace(/'/g,"\\'") + '\')" title="Ouvir pronÃºncia">ðŸ”Š</button>';
+            html += '<button class="dict-speak" onclick="FreeWorld.speak(\'' + e.w.replace(/'/g,"\\'") + '\')" title="Ouvir pronúncia">🔊</button>';
             html += '</div>';
         });
         container.innerHTML = html;
@@ -1411,7 +1410,7 @@ const FreeWorld = (function() {
             container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text3)">Nenhum verbo encontrado. Tente outra busca.</div>';
             return;
         }
-        const tenseNames = {present:'ðŸ• Presente Simples',past:'ðŸ•‘ Passado Simples',future:'ðŸ•’ Futuro Simples',presentPerf:'ðŸ•“ Presente Perfeito'};
+        const tenseNames = {present:'🕐 Presente Simples',past:'🕑 Passado Simples',future:'🕒 Futuro Simples',presentPerf:'🕓 Presente Perfeito'};
         const subjects = ['I','You','He/She/It','We','They'];
         let html = '';
         verbs.forEach(vb => {
@@ -1420,14 +1419,14 @@ const FreeWorld = (function() {
             html += '<div class="verb-title">To ' + vb.v.charAt(0).toUpperCase() + vb.v.slice(1);
             if (vb.irregular) html += '<span class="irregular">IRREGULAR</span>';
             html += '</div>';
-            html += '<div class="verb-meaning">â†’ ' + vb.pt + '</div>';
-            html += '</div><button class="dict-speak" onclick="FreeWorld.speak(\'to ' + vb.v + '\')" title="Ouvir">ðŸ”Š</button></div>';
+            html += '<div class="verb-meaning">→ ' + vb.pt + '</div>';
+            html += '</div><button class="dict-speak" onclick="FreeWorld.speak(\'to ' + vb.v + '\')" title="Ouvir">🔊</button></div>';
             html += '<div class="verb-forms">';
             html += '<div class="verb-form"><div class="verb-form-label">Base Form</div><div class="verb-form-value">' + vb.forms.base + '</div><div class="verb-form-pt">Infinitivo</div></div>';
             html += '<div class="verb-form"><div class="verb-form-label">Past Simple</div><div class="verb-form-value">' + vb.forms.past + '</div><div class="verb-form-pt">Passado</div></div>';
-            html += '<div class="verb-form"><div class="verb-form-label">Past Participle</div><div class="verb-form-value">' + vb.forms.pp + '</div><div class="verb-form-pt">ParticÃ­pio</div></div>';
-            html += '<div class="verb-form"><div class="verb-form-label">3rd Person</div><div class="verb-form-value">' + vb.forms.third + '</div><div class="verb-form-pt">3Âª pessoa</div></div>';
-            html += '<div class="verb-form"><div class="verb-form-label">Gerund</div><div class="verb-form-value">' + vb.forms.gerund + '</div><div class="verb-form-pt">GerÃºndio</div></div>';
+            html += '<div class="verb-form"><div class="verb-form-label">Past Participle</div><div class="verb-form-value">' + vb.forms.pp + '</div><div class="verb-form-pt">Particípio</div></div>';
+            html += '<div class="verb-form"><div class="verb-form-label">3rd Person</div><div class="verb-form-value">' + vb.forms.third + '</div><div class="verb-form-pt">3ª pessoa</div></div>';
+            html += '<div class="verb-form"><div class="verb-form-label">Gerund</div><div class="verb-form-value">' + vb.forms.gerund + '</div><div class="verb-form-pt">Gerúndio</div></div>';
             html += '<div class="verb-form"><div class="verb-form-label">Tipo</div><div class="verb-form-value" style="color:' + (vb.irregular ? 'var(--warm)' : 'var(--success)') + '">' + (vb.irregular ? 'Irregular' : 'Regular') + '</div></div>';
             html += '</div>';
             html += '<div class="verb-tenses">';
@@ -1442,9 +1441,9 @@ const FreeWorld = (function() {
             });
             html += '</div>';
             if (vb.examples) {
-                html += '<div class="verb-examples"><h4>ðŸ“Œ Exemplos</h4>';
+                html += '<div class="verb-examples"><h4>📌 Exemplos</h4>';
                 vb.examples.forEach(ex => {
-                    html += '<div class="verb-ex-item"><span class="en">' + ex.en + '</span> â€” <span class="pt">' + ex.pt + '</span></div>';
+                    html += '<div class="verb-ex-item"><span class="en">' + ex.en + '</span> — <span class="pt">' + ex.pt + '</span></div>';
                 });
                 html += '</div>';
             }
@@ -1489,5 +1488,4 @@ const FreeWorld = (function() {
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', FreeWorld.init);
-
 
