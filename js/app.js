@@ -133,7 +133,7 @@ const FreeWorld = (function() {
         renderSidebar();
         loadLesson();
         const greeting = state.studentName ? (state.studentName + ', bem-vindo(a)') : 'Bem-vindo';
-        const instrName = state.selectedInstructor === 'arthur' ? 'Arthur' : 'Leticia';
+        const instrName = state.selectedInstructor === 'vinicius' ? 'Vinicius' : 'Carolina';
         addChatMessage('system', '🌍 ' + greeting + ' ao FREE WORLD! Seu instrutor é ' + instrName + '. Use os comandos /NEXT, /VISUAL, /LEVEL_UP, /PRONUNCIATION ou /REVIEW para navegar.');
     }
 
@@ -399,10 +399,10 @@ const FreeWorld = (function() {
         const textEl = document.getElementById('content-text');
         const visualEl = document.getElementById('content-visual');
         // Dynamic instructor name replacement
-        const instrName = state.selectedInstructor === 'arthur' ? 'Arthur' : 'Leticia';
+        const instrName = state.selectedInstructor === 'vinicius' ? 'Vinicius' : 'Carolina';
         const studentGreeting = state.studentName ? ', ' + state.studentName + '!' : '!';
-        let introText = lesson.intro.text.replace(/I'm Arthur/g, "I'm " + instrName).replace(/Eu sou o Arthur/g, 'Eu sou ' + (state.selectedInstructor === 'arthur' ? 'o Arthur' : 'a Leticia'));
-        let introPt = lesson.intro.textPt ? lesson.intro.textPt.replace(/Eu sou o Arthur/g, 'Eu sou ' + (state.selectedInstructor === 'arthur' ? 'o Arthur' : 'a Leticia')) : '';
+        let introText = lesson.intro.text.replace(/I'm Vinicius/g, "I'm " + instrName).replace(/Eu sou o Vinicius/g, 'Eu sou ' + (state.selectedInstructor === 'vinicius' ? 'o Vinicius' : 'a Carolina'));
+        let introPt = lesson.intro.textPt ? lesson.intro.textPt.replace(/Eu sou o Vinicius/g, 'Eu sou ' + (state.selectedInstructor === 'vinicius' ? 'o Vinicius' : 'a Carolina')) : '';
         // Text side
         let textHtml = '<h4>📚 ' + lesson.title + '</h4>';
         textHtml += '<p class="en">' + introText + '</p>';
@@ -475,7 +475,7 @@ const FreeWorld = (function() {
             html += '<div class="dialogue-bubble ' + d.speaker + '" style="animation-delay:' + (i * 0.2) + 's">';
             html += '<img class="dialogue-avatar" src="assets/images/' + d.speaker + '.png" alt="' + d.speaker + '">';
             html += '<div class="dialogue-text-wrap">';
-            html += '<div class="dialogue-name">' + (isArthur ? 'Arthur' : 'Leticia') + '</div>';
+            html += '<div class="dialogue-name">' + (isVinicius ? 'Vinicius' : 'Carolina') + '</div>';
             html += '<div class="dialogue-msg">' + d.text + '</div>';
             if (state.settings.showTranslation && d.textPt) {
                 html += '<div class="dialogue-translation">' + d.textPt + '</div>';
@@ -483,7 +483,7 @@ const FreeWorld = (function() {
             html += '</div></div>';
         });
         content.innerHTML = html;
-        typeText('Listen to this conversation between Arthur and leticia. Try to understand before reading the translation!');
+        typeText('Listen to this conversation between Vinicius and Carolina. Try to understand before reading the translation!');
     }
 
     function renderPronunciation(lesson) {
@@ -761,7 +761,7 @@ const FreeWorld = (function() {
         });
         let html = '<div class="music-section">';
         html += '<h3 class="section-title">🎵 Aprenda Inglês com Músicas</h3>';
-        html += '<p style="color:var(--text2);margin-bottom:20px">Escolha uma música para estudar. Arthur e leticia vão contar a história, explicar a letra e criar exercícios especiais!</p>';
+        html += '<p style="color:var(--text2);margin-bottom:20px">Escolha uma música para estudar. Vinicius e Carolina vão contar a história, explicar a letra e criar exercícios especiais!</p>';
         MUSIC_LIBRARY.forEach(song => {
             html += '<div class="music-card" id="music-' + song.id + '">';
             html += '<div class="music-header" onclick="FreeWorld.toggleSong(\'' + song.id + '\')" style="cursor:pointer">';
@@ -769,16 +769,16 @@ const FreeWorld = (function() {
             html += '<div class="music-info"><h4>' + song.title + '</h4><p>' + song.artist + ' (' + song.year + ')</p></div>';
             html += '</div>';
             html += '<div class="music-body" id="music-body-' + song.id + '" style="display:none">';
-            // Story from Arthur & leticia
+            // Story from Vinicius & Carolina
             html += '<div class="music-story">';
             html += '<h4 style="color:var(--accent3);margin-bottom:12px">📖 A História da Música</h4>';
             html += '<div style="display:flex;gap:12px;margin-bottom:16px;align-items:flex-start">';
-            html += '<img src="assets/images/arthur.png" style="width:40px;height:40px;border-radius:50%;object-fit:cover">';
-            html += '<div><strong style="color:var(--accent3)">Arthur:</strong><p style="color:var(--text2);margin-top:4px;font-size:.9rem;line-height:1.6">' + song.story.arthur + '</p>';
+            html += '<img src="assets/images/vinicius.png" style="width:40px;height:40px;border-radius:50%;object-fit:cover">';
+            html += '<div><strong style="color:var(--accent3)">Vinicius:</strong><p style="color:var(--text2);margin-top:4px;font-size:.9rem;line-height:1.6">' + song.story.vinicius + '</p>';
             html += '<p style="color:var(--text3);font-style:italic;font-size:.82rem;margin-top:6px">' + song.story.storyPt + '</p></div></div>';
             html += '<div style="display:flex;gap:12px;align-items:flex-start">';
-            html += '<img src="assets/images/leticia.png" style="width:40px;height:40px;border-radius:50%;object-fit:cover">';
-            html += '<div><strong style="color:var(--accent2)">leticia:</strong><p style="color:var(--text2);margin-top:4px;font-size:.9rem;line-height:1.6">' + song.story.leticia + '</p></div></div>';
+            html += '<img src="assets/images/carolina.png" style="width:40px;height:40px;border-radius:50%;object-fit:cover">';
+            html += '<div><strong style="color:var(--accent2)">Carolina:</strong><p style="color:var(--text2);margin-top:4px;font-size:.9rem;line-height:1.6">' + song.story.carolina + '</p></div></div>';
             html += '</div>';
             // Lyrics side by side
             html += '<div class="music-lyrics">';
@@ -936,7 +936,7 @@ const FreeWorld = (function() {
             const text = e.results[0][0].transcript;
             document.getElementById('chat-input').value = text;
             addChatMessage('user', '🎤 ' + text);
-            addChatMessage('arthur', 'I heard you say: "' + text + '". ' + (e.results[0][0].confidence > 0.8 ? 'Great pronunciation! 👏' : 'Good try! Keep practicing! 💪'));
+            addChatMessage('vinicius', 'I heard you say: "' + text + '". ' + (e.results[0][0].confidence > 0.8 ? 'Great pronunciation! 👏' : 'Good try! Keep practicing! 💪'));
         };
         state.recognition.onend = function() { state.isRecording = false; btn.classList.remove('recording'); };
         state.recognition.onerror = function() { state.isRecording = false; btn.classList.remove('recording'); };
@@ -958,11 +958,11 @@ const FreeWorld = (function() {
         setTimeout(() => {
             const lower = text.toLowerCase();
             if (lower.includes('hello') || lower.includes('hi')) {
-                addChatMessage('arthur', 'Hello! Great to hear from you! How are you doing today? 😊');
+                addChatMessage('vinicius', 'Hello! Great to hear from you! How are you doing today? 😊');
             } else if (lower.includes('how are you')) {
-                addChatMessage('Leticia', 'I\'m doing wonderful, thank you for asking! And you? Try to answer in English! 😊');
+                addChatMessage('carolina', 'I\'m doing wonderful, thank you for asking! And you? Try to answer in English! 😊');
             } else if (lower.includes('thank')) {
-                addChatMessage('arthur', 'You\'re welcome! Keep up the great work! 💪');
+                addChatMessage('vinicius', 'You\'re welcome! Keep up the great work! 💪');
             } else if (lower.includes('help')) {
                 addChatMessage('system', 'Comandos disponíveis: /NEXT, /VISUAL, /LEVEL_UP, /PRONUNCIATION, /REVIEW, /PROGRESS');
             } else {
@@ -973,7 +973,7 @@ const FreeWorld = (function() {
                     'Well done! Remember to practice pronunciation too! 🔊',
                     'Nice! Every sentence you write makes you better! 📈'
                 ];
-                addChatMessage(Math.random() > 0.5 ? 'arthur' : 'Leticia', responses[Math.floor(Math.random() * responses.length)]);
+                addChatMessage(Math.random() > 0.5 ? 'vinicius' : 'carolina', responses[Math.floor(Math.random() * responses.length)]);
             }
         }, 500);
     }
@@ -984,7 +984,7 @@ const FreeWorld = (function() {
         switch(command) {
             case 'NEXT': nextStep(); addChatMessage('system', '⏭️ Avançando...'); break;
             case 'VISUAL':
-                addChatMessage('arthur', '[[VISUAL EXPANDIDO]] Let me paint a more detailed picture for you...');
+                addChatMessage('vinicius', '[[VISUAL EXPANDIDO]] Let me paint a more detailed picture for you...');
                 const lesson = getLesson();
                 if (lesson && lesson.intro) addChatMessage('system', '🖼️ ' + lesson.intro.visual);
                 break;
@@ -999,7 +999,7 @@ const FreeWorld = (function() {
                 }
                 break;
             case 'PRONUNCIATION':
-                addChatMessage('Leticia', '🔊 Let\'s focus on pronunciation! Listen carefully and repeat after me.');
+                addChatMessage('carolina', '🔊 Let\'s focus on pronunciation! Listen carefully and repeat after me.');
                 const l = getLesson();
                 if (l && l.pronunciation) {
                     l.pronunciation.forEach(p => speak(p.word));
@@ -1209,7 +1209,7 @@ const FreeWorld = (function() {
                 wrongOptions.push('Sorry, what did you say?');
             }
             rpState.steps.push({
-                speaker: q.speaker === 'arthur' ? instrName : instrName,
+                speaker: q.speaker === 'vinicius' ? instrName : instrName,
                 speakerImg: instrImg,
                 text: q.text,
                 textPt: q.textPt,
