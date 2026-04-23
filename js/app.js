@@ -893,13 +893,30 @@ const FreeWorld = (function() {
     }
 
     // ====== SPEECH ======
-    function speak(text) {
+    function getVoiceForInstructor(female) {
+        const voices = speechSynthesis.getVoices();
+        if (!voices.length) return null;
+        const enVoices = voices.filter(v => v.lang.startsWith('en'));
+        if (!enVoices.length) return null;
+        if (female) {
+            return enVoices.find(v => /female|zira|hazel|susan|linda|samantha|karen|moira|fiona|tessa|victoria/i.test(v.name))
+                || enVoices.find(v => !/male|david|james|mark|daniel|george|richard/i.test(v.name))
+                || enVoices[0];
+        }
+        return enVoices.find(v => /male|david|james|mark|daniel|george|richard/i.test(v.name))
+            || enVoices[0];
+    }
+
+    function speak(text, forceFemale) {
         if ('speechSynthesis' in window) {
             speechSynthesis.cancel();
             const u = new SpeechSynthesisUtterance(text);
             u.lang = 'en-US';
             u.rate = parseFloat(state.settings.voiceSpeed);
-            u.pitch = 1;
+            const isFemale = forceFemale !== undefined ? forceFemale : (state.selectedInstructor === 'carolina');
+            const voice = getVoiceForInstructor(isFemale);
+            if (voice) u.voice = voice;
+            u.pitch = isFemale ? 1.15 : 0.95;
             speechSynthesis.speak(u);
         }
     }
@@ -910,10 +927,16 @@ const FreeWorld = (function() {
             const u = new SpeechSynthesisUtterance(text);
             u.lang = 'en-US';
             u.rate = 0.4;
-            u.pitch = 1;
+            const isFemale = state.selectedInstructor === 'carolina';
+            const voice = getVoiceForInstructor(isFemale);
+            if (voice) u.voice = voice;
+            u.pitch = isFemale ? 1.15 : 0.95;
             speechSynthesis.speak(u);
         }
     }
+
+    // Preload voices
+    if ('speechSynthesis' in window) { speechSynthesis.onvoiceschanged = function(){}; speechSynthesis.getVoices(); }
 
     function toggleMic() {
         if (!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
