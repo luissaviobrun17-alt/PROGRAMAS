@@ -336,20 +336,38 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
 /* MUSIC SECTION */
 .music-section{margin-top:16px}
-.music-search{display:flex;gap:8px;margin-bottom:16px}
-.music-search input{flex:1;padding:12px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:24px;color:var(--text);font-family:inherit;font-size:.9rem}
-.music-search input:focus{outline:none;border-color:var(--accent)}
-.music-card{background:var(--glass);border:1px solid rgba(99,102,241,.1);border-radius:var(--radius);overflow:hidden;margin-bottom:16px}
+.music-search-box{background:var(--glass);border:1px solid rgba(99,102,241,.15);border-radius:var(--radius);padding:16px;margin-bottom:20px}
+.music-search-inner{display:flex;gap:8px;align-items:center}
+.music-search-icon{font-size:1.2rem;flex-shrink:0}
+.music-search-input{flex:1;padding:12px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:24px;color:var(--text);font-family:inherit;font-size:.9rem;transition:border-color .3s}
+.music-search-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 20px rgba(99,102,241,.15)}
+.music-search-input::placeholder{color:var(--text3)}
+.music-search-btn{padding:10px 20px!important;border-radius:24px!important;font-size:.85rem!important;white-space:nowrap}
+.spinner-search{display:inline-block;width:20px;height:20px;border:3px solid rgba(99,102,241,.2);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin-right:8px;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+.music-card{background:var(--glass);border:1px solid rgba(99,102,241,.1);border-radius:var(--radius);overflow:hidden;margin-bottom:16px;transition:border-color .3s}
+.music-card:hover{border-color:rgba(99,102,241,.25)}
 .music-header{padding:20px;display:flex;gap:16px;align-items:center}
-.music-cover{width:80px;height:80px;border-radius:12px;object-fit:cover;background:rgba(99,102,241,.1)}
+.music-cover{width:80px;height:80px;border-radius:12px;object-fit:cover;background:rgba(99,102,241,.1);flex-shrink:0}
 .music-info h4{font-size:1.1rem;margin-bottom:4px}.music-info p{font-size:.85rem;color:var(--text2)}
-.music-lyrics{padding:0 20px 20px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.lyrics-col h5{font-size:.8rem;text-transform:uppercase;letter-spacing:1px;color:var(--accent3);margin-bottom:10px}
-.lyrics-line{padding:6px 0;font-size:.88rem;line-height:1.6;color:var(--text2);cursor:pointer;transition:all .2s;border-bottom:1px solid rgba(255,255,255,.03)}
-.lyrics-line:hover{color:var(--text);background:rgba(99,102,241,.05);padding-left:8px}
-.lyrics-line.active{color:var(--accent3);font-weight:600}
+.music-toggle-icon{margin-left:auto;font-size:1rem;color:var(--text3);transition:transform .3s}
 .music-story{padding:20px;border-top:1px solid rgba(255,255,255,.05)}
 .music-exercises{padding:20px;border-top:1px solid rgba(255,255,255,.05)}
+/* Interleaved lyrics */
+.music-lyrics-interleaved{padding:0 0 20px}
+.lyric-pair{padding:10px 20px;cursor:pointer;transition:all .3s;border-left:3px solid transparent;margin-bottom:2px}
+.lyric-pair:hover{background:rgba(99,102,241,.06);border-left-color:var(--accent)}
+.lyric-en{font-size:.95rem;color:var(--text);line-height:1.6;font-weight:500;display:flex;align-items:center;gap:6px}
+.lyric-speak-icon{font-size:.75rem;opacity:.3;transition:opacity .2s}
+.lyric-pair:hover .lyric-speak-icon{opacity:1}
+.lyric-pt{font-size:.82rem;color:var(--accent3);font-style:italic;line-height:1.5;margin-top:2px;opacity:.8}
+.lyric-pt-auto{color:var(--text3)}
+/* Karaoke active */
+.lyric-pair.karaoke-active{background:rgba(99,102,241,.12);border-left-color:var(--accent2);border-left-width:4px;padding-left:19px;border-radius:0 8px 8px 0}
+.lyric-pair.karaoke-active .lyric-en{color:var(--accent3);font-weight:700;font-size:1rem}
+.lyric-pair.karaoke-active .lyric-pt{opacity:1;color:var(--warm)}
+.lyric-pair.karaoke-active .lyric-speak-icon{opacity:1;animation:pulse-speak .6s ease infinite}
+@keyframes pulse-speak{0%,100%{transform:scale(1)}50%{transform:scale(1.3)}}
 
 /* SETTINGS */
 .settings-list{display:flex;flex-direction:column;gap:16px;margin-top:20px}

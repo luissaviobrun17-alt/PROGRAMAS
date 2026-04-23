@@ -40,9 +40,9 @@ const MUSIC_LIBRARY = [
     year:1971,
     cover:'🎹',
     story:{
-      arthur:"This song was written by John Lennon in 1971. It's one of the most famous songs in history. Lennon wrote it inspired by Yoko Ono's poetry book 'Grapefruit'. The song asks us to imagine a world without borders, without religions dividing people, and without possessions. It's a beautiful call for peace and unity.",
+      vinicius:"This song was written by John Lennon in 1971. It's one of the most famous songs in history. Lennon wrote it inspired by Yoko Ono's poetry book 'Grapefruit'. The song asks us to imagine a world without borders, without religions dividing people, and without possessions. It's a beautiful call for peace and unity.",
       storyPt:"Esta música foi escrita por John Lennon em 1971. É uma das músicas mais famosas da história. Lennon a escreveu inspirado no livro de poesia 'Grapefruit' de Yoko Ono. A música nos pede para imaginar um mundo sem fronteiras, sem religiões dividindo pessoas, e sem posses. É um belo apelo à paz e à unidade.",
-      leticia:"When Lennon sat at his white piano in his Tittenhurst Park mansion, he created something timeless. The melody is simple but powerful. Notice how the piano carries the entire emotion of the song. Each verse builds on the idea of removing barriers between people."
+      carolina:"When Lennon sat at his white piano in his Tittenhurst Park mansion, he created something timeless. The melody is simple but powerful. Notice how the piano carries the entire emotion of the song. Each verse builds on the idea of removing barriers between people."
     },
     lyrics:[
       {en:"Imagine there's no heaven",pt:"Imagine que não há paraíso"},
@@ -84,9 +84,9 @@ const MUSIC_LIBRARY = [
     year:1965,
     cover:'🎸',
     story:{
-      arthur:"Paul McCartney woke up one morning with this melody in his head. He was so convinced he had heard it somewhere that he spent weeks asking people if they recognized it. When no one did, he realized he had composed one of the most covered songs in history — over 2,200 versions exist! The working title was 'Scrambled Eggs' because he used those words as placeholder lyrics.",
+      vinicius:"Paul McCartney woke up one morning with this melody in his head. He was so convinced he had heard it somewhere that he spent weeks asking people if they recognized it. When no one did, he realized he had composed one of the most covered songs in history — over 2,200 versions exist! The working title was 'Scrambled Eggs' because he used those words as placeholder lyrics.",
       storyPt:"Paul McCartney acordou uma manhã com esta melodia na cabeça. Ele estava tão convencido de que a tinha ouvido em algum lugar que passou semanas perguntando às pessoas se a reconheciam. Quando ninguém reconheceu, ele percebeu que tinha composto uma das músicas mais regravadas da história — mais de 2.200 versões existem! O título provisório era 'Scrambled Eggs' porque ele usou essas palavras como letras provisórias.",
-      leticia:"The beauty of this song lies in its simplicity. It uses basic past tense structures that are perfect for English learners. Notice the contrast between 'yesterday' (past) and 'now' (present). McCartney's voice carries a melancholy that transcends language barriers."
+      carolina:"The beauty of this song lies in its simplicity. It uses basic past tense structures that are perfect for English learners. Notice the contrast between 'yesterday' (past) and 'now' (present). McCartney's voice carries a melancholy that transcends language barriers."
     },
     lyrics:[
       {en:"Yesterday, all my troubles seemed so far away",pt:"Ontem, todos os meus problemas pareciam tão distantes"},
@@ -121,9 +121,9 @@ const MUSIC_LIBRARY = [
     year:2015,
     cover:'🎤',
     story:{
-      arthur:"Adele wrote 'Hello' after a period of silence. She had taken a three-year break from music to focus on her personal life. When she returned, this was the first song the world heard. It broke records everywhere — the music video reached one billion views faster than any other video in YouTube history at the time. The song is about trying to reconnect with someone from her past.",
+      vinicius:"Adele wrote 'Hello' after a period of silence. She had taken a three-year break from music to focus on her personal life. When she returned, this was the first song the world heard. It broke records everywhere — the music video reached one billion views faster than any other video in YouTube history at the time. The song is about trying to reconnect with someone from her past.",
       storyPt:"Adele escreveu 'Hello' após um período de silêncio. Ela fez uma pausa de três anos da música para focar em sua vida pessoal. Quando voltou, esta foi a primeira música que o mundo ouviu. Quebrou recordes em todo lugar — o clipe alcançou um bilhão de visualizações mais rápido do que qualquer outro vídeo na história do YouTube na época. A música é sobre tentar se reconectar com alguém do seu passado.",
-      leticia:"Pay attention to how Adele uses conditional structures: 'I was wondering if after all these years you'd like to meet.' This is a perfect example of polite, formal English. Also notice the phone call metaphor — she's calling from 'the other side,' which means from a different place in her life."
+      carolina:"Pay attention to how Adele uses conditional structures: 'I was wondering if after all these years you'd like to meet.' This is a perfect example of polite, formal English. Also notice the phone call metaphor — she's calling from 'the other side,' which means from a different place in her life."
     },
     lyrics:[
       {en:"Hello, it's me",pt:"Olá, sou eu"},

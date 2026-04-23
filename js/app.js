@@ -430,13 +430,16 @@ const FreeWorld = (function() {
         var visualEl = document.getElementById('content-visual');
         var instr = getInstrInfo();
         var sn = sName();
+        // Dynamic name replacement in lesson texts
+        var introTextPt = (lesson.intro.textPt || '').replace(/Eu sou o Vinicius/g, 'Eu sou ' + instr.name).replace(/Eu sou a Carolina/g, 'Eu sou ' + instr.name).replace(/I'm Vinicius/g, "I'm " + instr.name).replace(/I'm Carolina/g, "I'm " + instr.name);
+        var introTextEn = (lesson.intro.text || '').replace(/I'm Vinicius/g, "I'm " + instr.name).replace(/I'm Carolina/g, "I'm " + instr.name);
         var html = '<div class="lesson-phase-label">FASE 1 \u2014 CONTEXTUALIZA\u00c7\u00c3O</div>';
         html += '<h4 class="lesson-title-main">' + lesson.title + '</h4>';
         html += '<p class="lesson-title-pt">' + (lesson.titlePt || '') + '</p>';
-        html += instrBubble((state.studentName ? 'Ol\u00e1, <strong>' + sn + '</strong>! ' : 'Ol\u00e1! ') + lesson.intro.textPt, '<button class="btn-speak-inline" onclick="FreeWorld.speak(\'' + lesson.intro.text.replace(/'/g,"\\'") + '\')">🔊 Ouvir em ingl\u00eas</button>');
-        html += '<div class="intro-english-text"><p class="en">' + lesson.intro.text + '</p></div>';
+        html += instrBubble((state.studentName ? 'Ol\u00e1, <strong>' + sn + '</strong>! ' : 'Ol\u00e1! ') + introTextPt, '<button class="btn-speak-inline" onclick="FreeWorld.speak(\'' + introTextEn.replace(/'/g,"\\'") + '\')">🔊 Ouvir em ingl\u00eas</button>');
+        html += '<div class="intro-english-text"><p class="en">' + introTextEn + '</p></div>';
         textEl.innerHTML = html;
-        visualEl.innerHTML = '<div class="visual-icon">\ud83d\uddbc\ufe0f</div><p class="visual-desc">[[IMAGEM: ' + lesson.intro.visual + ']]</p>';
+        visualEl.innerHTML = '<div class="visual-icon">🖼️</div><p class="visual-desc">[[IMAGEM: ' + lesson.intro.visual + ']]</p>';
         typeText(instr.name + ': Welcome, ' + sn + '! Let\'s begin \u2014 ' + lesson.title);
     }
 
@@ -766,24 +769,56 @@ const FreeWorld = (function() {
     }
 
     // ====== MUSIC SECTION ======
+    let _karaokeSpeaking = false;
+    let _karaokeLines = [];
+    let _karaokeIdx = 0;
+
     function showMusicSection() {
         const content = document.getElementById('lesson-content');
-        // Hide all lesson sections
         ['dual-layout','vocabulary-section','grammar-section','dialogue-section','pronunciation-section','cultural-section','exercise-section','lesson-summary'].forEach(id => {
             const el = document.getElementById(id);
             if (el) el.style.display = 'none';
         });
         let html = '<div class="music-section">';
         html += '<h3 class="section-title">🎵 Aprenda Inglês com Músicas</h3>';
-        html += '<p style="color:var(--text2);margin-bottom:20px">Escolha uma música para estudar. Vinicius e Carolina vão contar a história, explicar a letra e criar exercícios especiais!</p>';
+        html += '<p style="color:var(--text2);margin-bottom:16px">Escolha uma música do catálogo ou busque qualquer música!</p>';
+        // Search bar
+        html += '<div class="music-search-box">';
+        html += '<div class="music-search-inner">';
+        html += '<span class="music-search-icon">🔍</span>';
+        html += '<input type="text" id="music-search-input" class="music-search-input" placeholder="Buscar música... ex: Bohemian Rhapsody - Queen">';
+        html += '<button class="btn btn-primary music-search-btn" onclick="FreeWorld.searchSong()">Buscar</button>';
+        html += '</div>';
+        html += '<div id="music-search-result" style="display:none"></div>';
+        html += '</div>';
+        // Library
+        html += '<h4 style="color:var(--accent2);margin:24px 0 12px;font-size:.95rem">📚 Catálogo de Músicas</h4>';
         MUSIC_LIBRARY.forEach(song => {
-            html += '<div class="music-card" id="music-' + song.id + '">';
-            html += '<div class="music-header" onclick="FreeWorld.toggleSong(\'' + song.id + '\')" style="cursor:pointer">';
-            html += '<div class="music-cover" style="font-size:2.5rem;display:flex;align-items:center;justify-content:center">' + song.cover + '</div>';
-            html += '<div class="music-info"><h4>' + song.title + '</h4><p>' + song.artist + ' (' + song.year + ')</p></div>';
-            html += '</div>';
-            html += '<div class="music-body" id="music-body-' + song.id + '" style="display:none">';
-            // Story from Vinicius & Carolina
+            html += renderSongCard(song);
+        });
+        html += '</div>';
+        const lc = document.getElementById('lesson-content');
+        let musicDiv = document.getElementById('music-section-container');
+        if (!musicDiv) {
+            musicDiv = document.createElement('div');
+            musicDiv.id = 'music-section-container';
+            lc.appendChild(musicDiv);
+        }
+        musicDiv.innerHTML = html;
+        musicDiv.style.display = 'block';
+        typeText('🎵 Bem-vindo à Sala de Música! Escolha uma música ou busque qualquer uma!');
+    }
+
+    function renderSongCard(song) {
+        let html = '<div class="music-card" id="music-' + song.id + '">';
+        html += '<div class="music-header" onclick="FreeWorld.toggleSong(\'' + song.id + '\')" style="cursor:pointer">';
+        html += '<div class="music-cover" style="font-size:2.5rem;display:flex;align-items:center;justify-content:center">' + song.cover + '</div>';
+        html += '<div class="music-info"><h4>' + song.title + '</h4><p>' + song.artist + ' (' + song.year + ')</p></div>';
+        html += '<span class="music-toggle-icon">▶</span>';
+        html += '</div>';
+        html += '<div class="music-body" id="music-body-' + song.id + '" style="display:none">';
+        // Story
+        if (song.story) {
             html += '<div class="music-story">';
             html += '<h4 style="color:var(--accent3);margin-bottom:12px">📖 A História da Música</h4>';
             html += '<div style="display:flex;gap:12px;margin-bottom:16px;align-items:flex-start">';
@@ -794,71 +829,199 @@ const FreeWorld = (function() {
             html += '<img src="assets/images/carolina.png" style="width:40px;height:40px;border-radius:50%;object-fit:cover">';
             html += '<div><strong style="color:var(--accent2)">Carolina:</strong><p style="color:var(--text2);margin-top:4px;font-size:.9rem;line-height:1.6">' + song.story.carolina + '</p></div></div>';
             html += '</div>';
-            // Lyrics side by side
-            html += '<div class="music-lyrics">';
-            html += '<div class="lyrics-col"><h5>🇬🇧 English</h5>';
-            song.lyrics.forEach((l, i) => {
-                html += '<div class="lyrics-line" onclick="FreeWorld.speak(\'' + l.en.replace(/'/g,"\\'") + '\')" title="Clique para ouvir">' + l.en + '</div>';
-            });
-            html += '</div><div class="lyrics-col"><h5>🇧🇷 Português</h5>';
-            song.lyrics.forEach(l => {
-                html += '<div class="lyrics-line">' + l.pt + '</div>';
-            });
-            html += '</div></div>';
-            // Vocabulary
-            if (song.vocabulary) {
-                html += '<div style="padding:20px;border-top:1px solid rgba(255,255,255,.05)">';
-                html += '<h4 style="color:var(--accent3);margin-bottom:12px">📖 Vocabulário da Música</h4>';
-                html += '<div class="vocab-cards">';
-                song.vocabulary.forEach(v => {
-                    html += '<div class="vocab-card">';
-                    html += '<button class="btn-speak" onclick="FreeWorld.speak(\'' + v.word.replace(/'/g,"\\'") + '\')">🔊</button>';
-                    html += '<div class="word">' + v.word + '</div>';
-                    html += '<div class="ipa">' + v.ipa + '</div>';
-                    html += '<div class="translation">→ ' + v.pt + '</div>';
-                    html += '<div class="example"><strong>Ex:</strong> ' + v.ex + '</div>';
-                    html += '</div>';
-                });
-                html += '</div></div>';
-            }
-            // Exercises
-            if (song.exercises) {
-                html += '<div class="music-exercises">';
-                html += '<h4 style="color:var(--accent3);margin-bottom:12px">🎯 Exercícios da Música</h4>';
-                song.exercises.forEach((ex, ei) => {
-                    html += '<div class="exercise-card" style="margin-bottom:12px">';
-                    html += '<div class="ex-type">' + getExTypeName(ex.type) + '</div>';
-                    html += '<div class="ex-question">' + ex.q + '</div>';
-                    if (ex.type === 'mc') {
-                        html += '<div class="ex-options">';
-                        ex.o.forEach((opt, oi) => {
-                            html += '<div class="ex-option" onclick="FreeWorld.answerMusicMC(this,' + oi + ',' + ex.a + ')">' + opt + '</div>';
-                        });
-                        html += '</div>';
-                    } else if (ex.type === 'fill' || ex.type === 'translate') {
-                        html += '<input type="text" class="ex-fill-input" id="music-ex-' + song.id + '-' + ei + '" placeholder="' + (ex.hint || 'Digite sua resposta...') + '">';
-                        html += '<button class="btn btn-primary ex-submit" onclick="FreeWorld.checkMusicFill(\'' + song.id + '\',' + ei + ',\'' + ex.a.replace(/'/g,"\\'") + '\')">Verificar ✓</button>';
-                    }
-                    html += '</div>';
-                });
-                html += '</div>';
-            }
-            html += '</div></div>';
+        }
+        // Karaoke button
+        html += '<div style="padding:12px 20px;display:flex;gap:10px;flex-wrap:wrap">';
+        html += '<button class="btn btn-primary" onclick="FreeWorld.karaokePlay(\'' + song.id + '\')"><span style="margin-right:4px">🎤</span> Karaokê (Ouvir Tudo)</button>';
+        html += '<button class="btn" style="background:rgba(255,255,255,.08);color:var(--text1)" onclick="FreeWorld.karaokeStop()">⏹ Parar</button>';
+        html += '</div>';
+        // Interleaved lyrics (EN + PT below each line)
+        html += '<div class="music-lyrics-interleaved" id="lyrics-' + song.id + '">';
+        html += '<h4 style="color:var(--accent2);margin-bottom:16px;padding:0 20px">🎶 Letra com Tradução</h4>';
+        song.lyrics.forEach((l, i) => {
+            html += '<div class="lyric-pair" id="lyric-' + song.id + '-' + i + '" onclick="FreeWorld.speak(\'' + l.en.replace(/'/g,"\\'") + '\')">';
+            html += '<div class="lyric-en">' + l.en + ' <span class="lyric-speak-icon">🔊</span></div>';
+            html += '<div class="lyric-pt">' + l.pt + '</div>';
+            html += '</div>';
         });
         html += '</div>';
-        content.querySelector('.lesson-content') ? content.querySelector('.lesson-content').innerHTML = html : null;
-        // If lesson-content doesn't have a sub, insert directly
-        const lc = document.getElementById('lesson-content');
-        // Append music section after other sections
-        let musicDiv = document.getElementById('music-section-container');
-        if (!musicDiv) {
-            musicDiv = document.createElement('div');
-            musicDiv.id = 'music-section-container';
-            lc.appendChild(musicDiv);
+        // Vocabulary
+        if (song.vocabulary) {
+            html += '<div style="padding:20px;border-top:1px solid rgba(255,255,255,.05)">';
+            html += '<h4 style="color:var(--accent3);margin-bottom:12px">📖 Vocabulário da Música</h4>';
+            html += '<div class="vocab-cards">';
+            song.vocabulary.forEach(v => {
+                html += '<div class="vocab-card">';
+                html += '<button class="btn-speak" onclick="FreeWorld.speak(\'' + v.word.replace(/'/g,"\\'") + '\')">🔊</button>';
+                html += '<div class="word">' + v.word + '</div>';
+                html += '<div class="ipa">' + v.ipa + '</div>';
+                html += '<div class="translation">→ ' + v.pt + '</div>';
+                html += '<div class="example"><strong>Ex:</strong> ' + v.ex + '</div>';
+                html += '</div>';
+            });
+            html += '</div></div>';
         }
-        musicDiv.innerHTML = html;
-        musicDiv.style.display = 'block';
-        typeText('🎵 Welcome to the Music Room! Choose a song and let\'s learn English through music!');
+        // Exercises
+        if (song.exercises) {
+            html += '<div class="music-exercises">';
+            html += '<h4 style="color:var(--accent3);margin-bottom:12px">🎯 Exercícios da Música</h4>';
+            song.exercises.forEach((ex, ei) => {
+                html += '<div class="exercise-card" style="margin-bottom:12px">';
+                html += '<div class="ex-type">' + getExTypeName(ex.type) + '</div>';
+                html += '<div class="ex-question">' + ex.q + '</div>';
+                if (ex.type === 'mc') {
+                    html += '<div class="ex-options">';
+                    ex.o.forEach((opt, oi) => {
+                        html += '<div class="ex-option" onclick="FreeWorld.answerMusicMC(this,' + oi + ',' + ex.a + ')">' + opt + '</div>';
+                    });
+                    html += '</div>';
+                } else if (ex.type === 'fill' || ex.type === 'translate') {
+                    html += '<input type="text" class="ex-fill-input" id="music-ex-' + song.id + '-' + ei + '" placeholder="' + (ex.hint || 'Digite sua resposta...') + '">';
+                    html += '<button class="btn btn-primary ex-submit" onclick="FreeWorld.checkMusicFill(\'' + song.id + '\',' + ei + ',\'' + ex.a.replace(/'/g,"\\'") + '\')">Verificar ✓</button>';
+                }
+                html += '</div>';
+            });
+            html += '</div>';
+        }
+        html += '</div></div>';
+        return html;
+    }
+
+    // ====== SONG SEARCH via lyrics.ovh ======
+    function searchSong() {
+        const input = document.getElementById('music-search-input');
+        if (!input) return;
+        const query = input.value.trim();
+        if (!query) return;
+        const resultDiv = document.getElementById('music-search-result');
+        resultDiv.style.display = 'block';
+        resultDiv.innerHTML = '<div style="padding:20px;text-align:center;color:var(--accent2)"><div class="spinner-search"></div> Buscando letra...</div>';
+        // Parse "title - artist" or "artist - title"
+        let artist = '', title = '';
+        if (query.includes(' - ')) {
+            const parts = query.split(' - ');
+            artist = parts[0].trim();
+            title = parts[1].trim();
+        } else {
+            artist = query;
+            title = query;
+        }
+        const url = 'https://api.lyrics.ovh/v1/' + encodeURIComponent(artist) + '/' + encodeURIComponent(title);
+        fetch(url)
+            .then(r => { if (!r.ok) throw new Error('not found'); return r.json(); })
+            .then(data => {
+                if (!data.lyrics) throw new Error('empty');
+                const lines = data.lyrics.split('\n').filter(l => l.trim().length > 0);
+                renderSearchResult(title, artist, lines, resultDiv);
+            })
+            .catch(() => {
+                resultDiv.innerHTML = '<div style="padding:20px;color:var(--error);text-align:center">'
+                    + '❌ Música não encontrada. Tente o formato: <strong>Artista - Título</strong><br>'
+                    + '<span style="font-size:.82rem;color:var(--text3)">Ex: Queen - Bohemian Rhapsody</span></div>';
+            });
+    }
+
+    function renderSearchResult(title, artist, lines, container) {
+        let html = '<div class="music-card music-search-card" id="music-search-found">';
+        html += '<div class="music-header" onclick="FreeWorld.toggleSong(\'search-found\')" style="cursor:pointer">';
+        html += '<div class="music-cover" style="font-size:2.5rem;display:flex;align-items:center;justify-content:center">🎵</div>';
+        html += '<div class="music-info"><h4>' + title + '</h4><p>' + artist + '</p></div>';
+        html += '<span class="music-toggle-icon">▶</span>';
+        html += '</div>';
+        html += '<div class="music-body" id="music-body-search-found" style="display:block">';
+        // Karaoke buttons
+        html += '<div style="padding:12px 20px;display:flex;gap:10px;flex-wrap:wrap">';
+        html += '<button class="btn btn-primary" onclick="FreeWorld.karaokePlay(\'search-found\')"><span style="margin-right:4px">🎤</span> Karaokê (Ouvir Tudo)</button>';
+        html += '<button class="btn" style="background:rgba(255,255,255,.08);color:var(--text1)" onclick="FreeWorld.karaokeStop()">⏹ Parar</button>';
+        html += '</div>';
+        // Interleaved lyrics
+        html += '<div class="music-lyrics-interleaved" id="lyrics-search-found">';
+        html += '<h4 style="color:var(--accent2);margin-bottom:16px;padding:0 20px">🎶 Letra com Tradução</h4>';
+        lines.forEach((line, i) => {
+            const safeEn = line.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+            html += '<div class="lyric-pair" id="lyric-search-found-' + i + '" onclick="FreeWorld.speak(\'' + safeEn + '\')">';
+            html += '<div class="lyric-en">' + line + ' <span class="lyric-speak-icon">🔊</span></div>';
+            html += '<div class="lyric-pt lyric-pt-auto" id="lyric-pt-search-' + i + '"><em style="color:var(--text3);font-size:.78rem">Traduzindo...</em></div>';
+            html += '</div>';
+        });
+        html += '</div>';
+        html += '</div></div>';
+        container.innerHTML = html;
+        // Auto-translate lines using MyMemory API (free, no key)
+        translateSearchLines(lines);
+    }
+
+    function translateSearchLines(lines) {
+        lines.forEach((line, i) => {
+            const el = document.getElementById('lyric-pt-search-' + i);
+            if (!el || line.trim().length < 2) { if(el) el.innerHTML = ''; return; }
+            const url = 'https://api.mymemory.translated.net/get?q=' + encodeURIComponent(line) + '&langpair=en|pt-br';
+            fetch(url).then(r => r.json()).then(data => {
+                if (data.responseData && data.responseData.translatedText) {
+                    el.textContent = data.responseData.translatedText;
+                } else {
+                    el.innerHTML = '<em style="color:var(--text3);font-size:.78rem">(tradução indisponível)</em>';
+                }
+            }).catch(() => {
+                el.innerHTML = '<em style="color:var(--text3);font-size:.78rem">(tradução indisponível)</em>';
+            });
+        });
+    }
+
+    // ====== KARAOKE PLAYER (TTS + highlight) ======
+    function karaokePlay(songId) {
+        karaokeStop();
+        const lyricsContainer = document.getElementById('lyrics-' + songId);
+        if (!lyricsContainer) return;
+        const pairs = lyricsContainer.querySelectorAll('.lyric-pair');
+        if (!pairs.length) return;
+        _karaokeLines = Array.from(pairs);
+        _karaokeIdx = 0;
+        _karaokeSpeaking = true;
+        karaokeNext(songId);
+    }
+
+    function karaokeNext(songId) {
+        if (!_karaokeSpeaking || _karaokeIdx >= _karaokeLines.length) {
+            karaokeStop();
+            return;
+        }
+        // Remove highlight from all
+        _karaokeLines.forEach(p => p.classList.remove('karaoke-active'));
+        // Highlight current
+        const current = _karaokeLines[_karaokeIdx];
+        current.classList.add('karaoke-active');
+        current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Get EN text
+        const enEl = current.querySelector('.lyric-en');
+        if (!enEl) { _karaokeIdx++; karaokeNext(songId); return; }
+        let text = enEl.textContent.replace('🔊', '').trim();
+        if (!text || text.length < 2) { _karaokeIdx++; karaokeNext(songId); return; }
+        // Speak it
+        if ('speechSynthesis' in window) {
+            speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(text);
+            u.lang = 'en-US';
+            u.rate = 0.85;
+            const voice = getVoiceForInstructor(state.selectedInstructor === 'carolina');
+            if (voice) u.voice = voice;
+            u.onend = function() {
+                if (!_karaokeSpeaking) return;
+                _karaokeIdx++;
+                setTimeout(() => karaokeNext(songId), 300);
+            };
+            u.onerror = function() {
+                _karaokeIdx++;
+                setTimeout(() => karaokeNext(songId), 300);
+            };
+            speechSynthesis.speak(u);
+        }
+    }
+
+    function karaokeStop() {
+        _karaokeSpeaking = false;
+        if ('speechSynthesis' in window) speechSynthesis.cancel();
+        document.querySelectorAll('.lyric-pair').forEach(p => p.classList.remove('karaoke-active'));
     }
 
     function toggleSong(id) {
@@ -1523,6 +1686,7 @@ const FreeWorld = (function() {
         showProgress, showSettings, closeModal,
         updateSetting, resetProgress,
         showMusicSection, toggleSong, answerMusicMC, checkMusicFill,
+        searchSong, karaokePlay, karaokeStop,
         flipFlashcard, flashcardAnswer,
         answerRoleplay, nextRoleplay,
         playListenPhrase, checkListen, nextListen,
