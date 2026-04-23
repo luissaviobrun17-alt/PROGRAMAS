@@ -73,10 +73,30 @@
                         <span class="instructor-specialty">Pronúncia &amp; Conversação</span>
                     </div>
                 </div>
+                <p class="wizard-section-label">Escolha como começar</p>
+                <div class="theme-cards">
+                    <div class="theme-card" onclick="FreeWorld.startTheme('music')">
+                        <span class="theme-icon">🎵</span>
+                        <span class="theme-name">Músicas</span>
+                        <span class="theme-desc">Aprenda com hits</span>
+                    </div>
+                    <div class="theme-card" onclick="FreeWorld.startTheme('travel')">
+                        <span class="theme-icon">✈️</span>
+                        <span class="theme-name">Viagens</span>
+                        <span class="theme-desc">Inglês no exterior</span>
+                    </div>
+                    <div class="theme-card" onclick="FreeWorld.startTheme('business')">
+                        <span class="theme-icon">💼</span>
+                        <span class="theme-name">Negócios</span>
+                        <span class="theme-desc">Inglês corporativo</span>
+                    </div>
+                    <div class="theme-card" onclick="FreeWorld.startBeginner()">
+                        <span class="theme-icon">📚</span>
+                        <span class="theme-name">Básico (A1)</span>
+                        <span class="theme-desc">Começar do zero</span>
+                    </div>
+                </div>
                 <div class="wizard-final-actions">
-                    <button id="btn-start-beginner" class="btn btn-primary btn-xl" onclick="FreeWorld.startBeginner()">
-                        🚀 Começar do Básico (A1)
-                    </button>
                     <button id="btn-placement-test" class="btn btn-secondary btn-lg" onclick="FreeWorld.showPlacement()">
                         📝 Teste de Nivelamento
                     </button>

@@ -137,6 +137,29 @@ const FreeWorld = (function() {
         addChatMessage('system', '🌍 ' + greeting + ' ao FREE WORLD! Seu instrutor é ' + instrName + '. Use os comandos /NEXT, /VISUAL, /LEVEL_UP, /PRONUNCIATION ou /REVIEW para navegar.');
     }
 
+    function startTheme(theme) {
+        if (theme === 'music') {
+            state.level = 'A1'; state.moduleIndex = 0; state.lessonIndex = 0;
+            startApp();
+            // Navigate to music step
+            setTimeout(function() {
+                var totalSteps = 9;
+                for (var i = 0; i < totalSteps; i++) {
+                    if (document.getElementById('flashcard-section') && document.getElementById('flashcard-section').style.display !== 'none') break;
+                    state.currentStep++;
+                }
+                state.currentStep = 8;
+                loadStep();
+            }, 300);
+        } else if (theme === 'travel') {
+            state.level = 'A2'; state.moduleIndex = 0; state.lessonIndex = 0;
+            startApp();
+        } else if (theme === 'business') {
+            state.level = 'B1'; state.moduleIndex = 0; state.lessonIndex = 0;
+            startApp();
+        }
+    }
+
     // ====== PLACEMENT TEST ======
     function renderPlacementQuestion() {
         const q = PLACEMENT_QUESTIONS[state.placementIndex];
@@ -1499,7 +1522,7 @@ const FreeWorld = (function() {
 
     // ====== PUBLIC API ======
     return {
-        init, selectInstructor, setStudentName, showWelcome, showPlacement, startBeginner, continueProgress, startFromResult, wizardNext,
+        init, selectInstructor, setStudentName, showWelcome, showPlacement, startBeginner, startTheme, continueProgress, startFromResult, wizardNext,
         toggleSidebar, changeLevel, toggleModule, goToLesson, goToStep,
         nextStep, prevStep, nextLesson, reviewLesson, nextExercise,
         selectPlacementOption, nextPlacementQuestion,
