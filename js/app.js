@@ -154,6 +154,9 @@ const FreeWorld = (function() {
         } else if (theme === 'travel') {
             state.level = 'A2'; state.moduleIndex = 0; state.lessonIndex = 0;
             startApp();
+            setTimeout(function(){
+                if(typeof TravelModule !== 'undefined') TravelModule.start(state.studentName || 'aluno');
+            }, 400);
         } else if (theme === 'business') {
             state.level = 'B1'; state.moduleIndex = 0; state.lessonIndex = 0;
             startApp();
@@ -261,6 +264,12 @@ const FreeWorld = (function() {
         html += '<div class="module-group">';
         html += '<div class="module-title" onclick="FreeWorld.showMusicSection()">';
         html += '<span class="module-icon">🎵</span> Aprenda com Músicas';
+        html += '</div></div>';
+
+        // Travel section in sidebar
+        html += '<div class="module-group">';
+        html += '<div class="module-title" onclick="FreeWorld.showTravelSection()">';
+        html += '<span class="module-icon">✈️</span> Viagens Interativas';
         html += '</div></div>';
 
         nav.innerHTML = html;
@@ -766,6 +775,12 @@ const FreeWorld = (function() {
     function reviewLesson() {
         state.currentStep = 0;
         renderCurrentStep();
+    }
+
+    // ====== TRAVEL SECTION ======
+    function showTravelSection() {
+        showScreen('app');
+        if(typeof TravelModule !== 'undefined') TravelModule.start(state.studentName || 'aluno');
     }
 
     // ====== MUSIC SECTION ======
@@ -1685,7 +1700,7 @@ const FreeWorld = (function() {
         speak, speakSlow,
         showProgress, showSettings, closeModal,
         updateSetting, resetProgress,
-        showMusicSection, toggleSong, answerMusicMC, checkMusicFill,
+        showMusicSection, showTravelSection, toggleSong, answerMusicMC, checkMusicFill,
         searchSong, karaokePlay, karaokeStop,
         flipFlashcard, flashcardAnswer,
         answerRoleplay, nextRoleplay,
